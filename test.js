@@ -120,3 +120,4 @@ while(true){
   
   console.log(computeOperations(parseOperations(ausprobieren, 0), 0));
 }
+//Test
