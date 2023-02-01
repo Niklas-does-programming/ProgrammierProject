@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 function parseOperations(operations, index) {
   //setup
   let numberIndex = 0;
@@ -123,4 +121,3 @@ while(true){
   console.log(computeOperations(parseOperations(ausprobieren, 0), 0));
 }
 //Test
->>>>>>> ca9c5b94ca0691786cfc495a4500f416bd093807
