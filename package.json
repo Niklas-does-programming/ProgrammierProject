@@ -1,0 +1,22 @@
+{
+  "name": "programmierproject",
+  "version": "1.0.0",
+  "description": "Programmierprojekt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Niklas-does-programming/ProgrammierProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Niklas-does-programming/ProgrammierProject/issues"
+  },
+  "homepage": "https://github.com/Niklas-does-programming/ProgrammierProject#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
