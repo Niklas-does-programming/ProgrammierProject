@@ -13,5 +13,6 @@ const prompt = require("prompt-sync")();
 console.log("hallo");
 let test = prompt('lalala');
 console.log(test);
+console.log("Test");
 
 // programm loop
