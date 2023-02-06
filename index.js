@@ -3,9 +3,9 @@
 // and the inputs will be forwarded to the
 // responsible functions
 class programmState{
-    constructor(menu ,questionarray){
+    constructor(menu ,questionArray){
         this.menu = menu;
-        this.questionarray = questionarray;
+        this.questionArray = questionArray;
     }
 };
 
