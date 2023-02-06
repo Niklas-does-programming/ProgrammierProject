@@ -2,14 +2,25 @@
 // functions for editing the existing database 
 // of questions
 
-import {programmState} from './utils.js';
+import {programmState, question} from './utils.js';
+
+import psp from 'prompt-sync-plus';
+const prompt = psp();
 
 // add question
 // takes a question and programstate and adds 
 // the question to the array of existing questions
 function addQuestion(ps){
     // TODO namen des arrays
-    ps.questionArray.push(question);
+    questionText = prompt("Wie soll die Frage lauten?");
+    answerText = prompt("Wie soll die Antwort lauten?");
+    let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit`);
+    if(answer === "Ja"){
+        let newQuestion = new question("Frage", questionText, answerText, )
+        ps.questionArray.push(question);
+    }else if(answer === "Nein"){
+        addQuestion(ps);
+    }
 }
 
 // delete question
