@@ -1,6 +1,7 @@
 {
   "name": "programmierproject",
   "version": "1.0.0",
+  "type": "module",
   "description": "Programmierprojekt",
   "main": "index.js",
   "scripts": {
