@@ -35,8 +35,8 @@ while(input !== "exit"){
             break;
         default:
             console.log("Ungültige Eingabe");
-            let input = prompt('Eingabe(ver für Verwaltungsmodus, anw für Anwendungsmodus, exit): ');
+            break;
 
     }
-
+    input = prompt('Eingabe(ver für Verwaltungsmodus, anw für Anwendungsmodus, exit): ');
 }   
