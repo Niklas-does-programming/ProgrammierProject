@@ -2,13 +2,15 @@
 // functions for saving the data
 // and reading it from a JSON file
 
-let jsonFile = require('jsonfile');
-
-for (i = 0; i < 11; i++) {
-    jsonFile.writeFile('loop.json', "id :" + i + " square :" + i * i);
-}
 // read data
 
+import * as fs from 'fs'; // import method from 'fs'
+const file = fs.readFileSync('./data.json'); // read JSON-file
+const data = JSON.parse(file); 
 
 
 // write data
+function writeData(){
+const questionArray = JSON.parse(jsonArray); //parse obj to str in Json
+/// Todo in programm state rein
+}
