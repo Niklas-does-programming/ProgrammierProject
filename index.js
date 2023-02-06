@@ -3,9 +3,10 @@
 // and the inputs will be forwarded to the
 // responsible functions
 class programmState{
-    constructor(menu ,questionArray){
+    constructor(menu ,questionArray, categoryArray){
         this.menu = menu;
         this.questionArray = questionArray;
+        this.categoryArray = categoryArray;
     }
 };
 
@@ -14,7 +15,7 @@ const prompt = require("prompt-sync")();
 // const file = fs.readFileSync('./data.json'); // JSON-Datei einlesen
 // const data = JSON.parse(file); // JSON-Daten --> JS Array/Objekte
 
-let ps = new programmState("main",[]); //[]dummy
+let ps = new programmState("main",[],[]); //[]dummy
 
 // read data from file
 console.log("Wilkommen zu der Lernapp");
