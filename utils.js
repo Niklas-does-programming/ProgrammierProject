@@ -1,15 +1,7 @@
 // utilitiy functions
 // neccessary functions and classes
 
-class programmState{
-    constructor(menu ,questionArray, categoryArray){
-        this.menu = menu;
-        this.questionArray = questionArray;
-        this.categoryArray = categoryArray;
-    }
-};
-
-class question{
+export class question{
     constructor(type,question,answer,category,asked,wrong){
         this.type = type;         // what type of question
         this.question = question; // the question as string
@@ -20,7 +12,13 @@ class question{
     }
 }
 
-
+export class programmState{
+    constructor(menu ,questionArray, categoryArray){
+        this.menu = menu;
+        this.questionArray = questionArray;
+        this.categoryArray = categoryArray;
+    }
+};
 
 
 // sort questions

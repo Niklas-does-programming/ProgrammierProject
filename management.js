@@ -2,13 +2,14 @@
 // functions for editing the existing database 
 // of questions
 
+import {programmState} from './utils.js';
 
 // add question
 // takes a question and programstate and adds 
 // the question to the array of existing questions
-function addQuestion(question, ps){
+function addQuestion(ps){
     // TODO namen des arrays
-    ps.questionarray.push(question);
+    ps.questionArray.push(question);
 }
 
 // delete question

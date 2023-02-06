@@ -2,16 +2,14 @@
 // here the main programm loop will take place 
 // and the inputs will be forwarded to the
 // responsible functions
-const utils = require('./utils.js');
+import {programmState} from './utils.js';
 
-const prompt = require("prompt-sync")();
-// import * as fs from 'fs'; // importiere Methoden aus 'fs'
-// const file = fs.readFileSync('./data.json'); // JSON-Datei einlesen
-// const data = JSON.parse(file); // JSON-Daten --> JS Array/Objekte
+import psp from 'prompt-sync-plus';
+const prompt = psp();
 
 let ps = new programmState("main",[],[]); //[]dummy
 
-// read data from file
+// read data from file+
 console.log("Wilkommen zu der Lernapp");
 console.log("Mit exit kommt man zurück zum main menu bzw. beendet das Programm");
 
