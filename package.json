@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Niklas-does-programming/ProgrammierProject#readme",
   "dependencies": {
+    "jsonfile": "^6.1.0",
     "prompt-sync": "^4.2.0"
   }
 }
