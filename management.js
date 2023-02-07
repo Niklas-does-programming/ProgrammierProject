@@ -9,11 +9,18 @@ const prompt = psp();
 
 
 function handleManagement(input, ps){
+    // TODO menustruktur ausgeben und exit abfragen
     if(ps.menu === ""){// obermenü
         switch(input){
-            case ""
+            case "":
+                break;
         }
-    }else if(ps.menu === "")
+    }else if(ps.menu === ""){
+        switch(input){
+            case "":
+                break;
+        }
+    }
 }
 
 // add question
