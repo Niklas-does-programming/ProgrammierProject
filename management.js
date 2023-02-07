@@ -7,20 +7,31 @@ import {programmState, question} from './utils.js';
 import psp from 'prompt-sync-plus';
 const prompt = psp();
 
+
+function handleManagement(input, ps){
+    if(ps.menu === ""){// obermenü
+        switch(input){
+            case ""
+        }
+    }else if(ps.menu === "")
+}
+
 // add question
 // takes a question and programstate and adds 
 // the question to the array of existing questions
-function addQuestion(ps){
-    // TODO namen des arrays
+function addQuestion(ps, category){
     questionText = prompt("Wie soll die Frage lauten?");
     answerText = prompt("Wie soll die Antwort lauten?");
     let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit`);
     if(answer === "Ja"){
-        let newQuestion = new question("Frage", questionText, answerText, )
+        let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
         ps.questionArray.push(question);
     }else if(answer === "Nein"){
         addQuestion(ps);
-    }
+    }else if(answer === "exit"){
+        // TODO menu umsetzen
+        return;
+    }// TODO wenn ungültige eingabe dann mit selben daten frage neu
 }
 
 // delete question
@@ -43,8 +54,10 @@ function editQuestion(index, array, question){
 // add category
 // adds a new category to the category array
 // (as string)
-function addCategory(category, ps){
+function addCategory(ps){
+    newCategory = prompt("Wie soll die neue Kategorie heißen?");
     ps.categoryArray.push(category);
+    console.log(`neue Kategorie '${newCategory}' hinzugefügt`);
 }
 
 // delete category
@@ -54,6 +67,7 @@ function deleteCategory(category, ps){
     // using the select function splices elements
     // from the question array
     // TODO select funktion anpassen
+    // TODO categories auflisten und fragen welche gelöscht werden soll
     utils.select(category);
     let isCategory = element => element === category;
     let index = ps.categoryArray.findIndex(isCategory);
@@ -66,7 +80,7 @@ function editCategory(category, newName, ps){
     tmp = utils.select(category);
     for(let i = 0; i < tmp.length; i++){
         // TODO index der kategorie 
-        tmp[i][1] = newName;
+        tmp[i].category = newName;
         ps.questionarray.push(tmp[i]);
     }
     let isCategory = element => element === category;
