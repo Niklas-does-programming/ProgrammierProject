@@ -8,12 +8,27 @@ import * as fs from 'fs'; // import method from 'fs'
 export function readData(){
 const file = fs.readFileSync('./data.json'); // read JSON-file
 const data = JSON.parse(file); 
-return data
 }
 
 // write data
+import { LocalStorage } from 'node-localstorage';
 export function writeData(){
-const questionArray = JSON.stringify(jsonArray); //parse obj to str in Json
-/// Todo in programm state rein
-return questionArray
+const localStorage = new LocalStorage('./database');
+const myContacts = [
+    {
+      id: 1,
+      name: "Alice"
+    },
+    {
+      id: 2,
+      name: "Bob"
+    }
+];
+const questionArray = JSON.stringify(myContacts); //parse obj to str in Jsonformat
+localStorage.setItem("contacts", questionArray);
+const dataString = localStorage.getItem("contacts");
+const contacts = JSON.parse(dataString);
+console.log(contacts)
 }
+
+writeData()
