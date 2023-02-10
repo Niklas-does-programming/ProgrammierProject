@@ -11,7 +11,7 @@ let ps = new programmState("main",[],[]); //[]dummy
 
 // read data from file+
 console.log("Wilkommen zu der Lernapp");
-console.log("Mit exit kommt man zurück zum main menu bzw. beendet das Programm");
+console.log("Mit exit kommt man zurück zum Hauptmenü bzw. beendet das Programm");
 
 let input = prompt('Eingabe(ver für Verwaltungsmodus, anw für Anwendungsmodus, exit): ');
 
