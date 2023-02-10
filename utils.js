@@ -20,5 +20,30 @@ export class programmState{
     }
 };
 
+// statistics
+export function stats(questionArray){
+    let statArray;
+    for(let i = 0;i < questionArray.length;i++){
+        let ask = questionArray.asked[i];
+        let wrg = questionArray.wrong[i];
+        statArray[i][0] = questionArray.questionText[i];
+        if(wrg === 0){
+            statArray[i][1] = ask; //geg ändern wegen gewichtung mit anz gefragt
+        }
+        else{
+            statArray[i][1] = ask / wrg;
+        }
+    }
+    return statArray;
+};
 
 // sort questions
+export function sortQuestions(questionArray){
+    let sortArray;
+    for(let i = questionArray.length;i > 0;i++){
+        let rand = Math.floor(Math.random() * questionArray.length);
+        sortArray.push(questionArray[rand]);
+        questionArray.splice(rand,1);
+    }
+    return sortArray;
+};
