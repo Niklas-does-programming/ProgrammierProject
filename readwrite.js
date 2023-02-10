@@ -5,12 +5,15 @@
 // read data
 
 import * as fs from 'fs'; // import method from 'fs'
+export function readData(){
 const file = fs.readFileSync('./data.json'); // read JSON-file
 const data = JSON.parse(file); 
-
+return data
+}
 
 // write data
-function writeData(){
-const questionArray = JSON.parse(jsonArray); //parse obj to str in Json
+export function writeData(){
+const questionArray = JSON.stringify(jsonArray); //parse obj to str in Json
 /// Todo in programm state rein
+return questionArray
 }
