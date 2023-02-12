@@ -2,7 +2,7 @@
 // neccessary functions and classes
 
 export class question{
-    constructor(type,question,answer,category,asked,wrong){
+    constructor(type,questionText,answerText,category,asked,wrong){
         this.type = type;                 // what type of question
         this.questionText = questionText; // the question as string
         this.answerText = answerText;     // the answer as string
@@ -47,3 +47,16 @@ export function sortQuestions(questionArray){
     }
     return sortArray;
 };
+
+export function select(ps, criteria){
+    let tmp = [];
+    console.log(ps);
+    for(let i = ps.questionArray.length-1; i >= 0; i--){
+        let index = Object.values(ps.questionArray[i]).indexOf(criteria);
+        if(index > -1){
+            let element = ps.questionArray.splice(i,1);
+            tmp.push(element);
+        }
+    }
+    return(tmp);
+}
