@@ -12,7 +12,7 @@ export class question{
     }
 }
 
-export class multChoice{
+export class multipleChoice{
     constructor(type,questionText,answerDic,category,asked,wrong){
         this.type = type;                 // what type of question
         this.questionText = questionText; // the question as string

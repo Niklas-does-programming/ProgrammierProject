@@ -3,32 +3,20 @@
 // and reading it from a JSON file
 
 // read data
-
-import * as fs from 'fs'; // import method from 'fs'
-export function readData(){
-const file = fs.readFileSync('./data.json'); // read JSON-file
-const data = JSON.parse(file); 
-}
-
-// write data
 import { LocalStorage } from 'node-localstorage';
-export function writeData(){
-const localStorage = new LocalStorage('./database');
-const myContacts = [
-    {
-      id: 1,
-      name: "Alice"
-    },
-    {
-      id: 2,
-      name: "Bob"
-    }
-];
-const questionArray = JSON.stringify(myContacts); //parse obj to str in Jsonformat
-localStorage.setItem("contacts", questionArray);
-const dataString = localStorage.getItem("contacts");
-const contacts = JSON.parse(dataString);
-console.log(contacts)
+const localStorage = new LocalStorage('./database'); //creates new Localstorage
+
+export function readData(keyToFile){
+    let test = localStorage.getItem(keyToFile); //sets JSON File in Localstorage
+    const data = JSON.parse(test); 
+    return data
 }
 
-writeData()
+export function saveData(keyToFile,fileToBeSaved){
+    const data = JSON.stringify(fileToBeSaved); //parse obj to str in Jsonformat
+    localStorage.setItem(keyToFile, data); //sets JSON File in Localstorage
+}
+ 
+
+
+

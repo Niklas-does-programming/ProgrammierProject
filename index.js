@@ -2,7 +2,8 @@
 // here the main programm loop will take place 
 // and the inputs will be forwarded to the
 // responsible functions
-import {programmState, question, multChoice} from './utils.js';
+import {programmState, question, multipleChoice} from './utils.js';
+import { saveData } from './readwrite.js';
 
 import psp from 'prompt-sync-plus';
 const prompt = psp();
@@ -19,12 +20,12 @@ let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
 
 let ps = new programmState("main",[],[]); //[]dummy
 
-const dic = {"deshalb" : true,"weil" : true, "Baum" : false}
+// const dic = {"deshalb" : true,"weil" : true, "Baum" : false};
 
 let q1 = new question("Frage", "warum", "darum", "Mathe", 0, 0);
 let q2 = new question("Frage", "waru", "daru", "Mathe", 0, 0);
 let q3 = new question("Frage", "weshalb", "deshalb", "Deutsch", 0, 0);
-let q4 = new multChoice("Mult-Frage", "weshalb", dic, "Deutsch", 0, 0);
+let q4 = new multipleChoice("Mult-Frage", "weshalb", {"deshalb" : true,"weil" : true, "Baum" : false}, "Deutsch", 0, 0);
 
 
 let ps2 = new programmState("main", [q1, q2, q3, q4], ["Mathe", "Deutsch"]);
@@ -57,4 +58,5 @@ while(input !== "exit"){
     }
     input = prompt(mainString);
 }   
-console.log(ps2);/////////////////////////////////////////////
+//console.log(ps2);/////////////////////////////////////////////
+saveData("defaultPS", ps2)
