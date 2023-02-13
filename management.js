@@ -13,7 +13,7 @@ let managementString = "Sie befinden sich im Verwaltungsmenü, was möchten Sie 
                    "[1] Eine neue Kategorie hinzufügen\n" + 
                    "[2] Eine vorhandene Kategorie bearbeiten (Namen/Fragen)\n" +
                    "[3] Eine vorhandene Kategorie löschen\n" +
-                   "[exit] zurück zum Hauptmenü";
+                   "[exit] zurück zum Hauptmenü\n";
 /////////////////////
 
 
@@ -43,10 +43,9 @@ export function handleManagement(ps){
 // takes a question and programstate and adds 
 // the question to the array of existing questions
 function addQuestion(tmp, category){
-    
     let questionText = prompt("Wie soll die Frage lauten?");
     let answerText = prompt("Wie soll die Antwort lauten?");
-    let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit`);
+    let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
     if(answer === "Ja"){
         let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
         tmp.push(newQuestion);
@@ -64,7 +63,7 @@ function deleteQuestion(array){
     // TODO namen des arrays
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i]}\n` + questionString;
+        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
     }
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
@@ -77,7 +76,7 @@ function deleteQuestion(array){
 function editQuestion(array, category){
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i]}\n` + questionString;
+        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
@@ -100,7 +99,7 @@ function editQuestion(array, category){
 // adds a new category to the category array
 // (as string)
 function addCategory(ps){
-    let newCategory = prompt("Wie soll die neue Kategorie heißen?");
+    let newCategory = prompt("Wie soll die neue Kategorie heißen?\n");
     ps.categoryArray.push(newCategory);
     console.log(`neue Kategorie '${newCategory}' hinzugefügt`);
 }
