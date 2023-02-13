@@ -66,7 +66,7 @@ export function select(ps, criteria){
         let index = Object.values(ps.questionArray[i]).indexOf(criteria);
         if(index > -1){
             let element = ps.questionArray.splice(i,1);
-            tmp.push(element);
+            tmp.push(element[0]);
         }
     }
     return(tmp);
