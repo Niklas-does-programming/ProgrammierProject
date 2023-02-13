@@ -2,7 +2,7 @@
 // here the main programm loop will take place 
 // and the inputs will be forwarded to the
 // responsible functions
-import {programmState, question} from './utils.js';
+import {programmState, question, multChoice} from './utils.js';
 
 import psp from 'prompt-sync-plus';
 const prompt = psp();
@@ -19,12 +19,15 @@ let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
 
 let ps = new programmState("main",[],[]); //[]dummy
 
+const dic = {"deshalb" : true,"weil" : true, "Baum" : false}
+
 let q1 = new question("Frage", "warum", "darum", "Mathe", 0, 0);
 let q2 = new question("Frage", "waru", "daru", "Mathe", 0, 0);
 let q3 = new question("Frage", "weshalb", "deshalb", "Deutsch", 0, 0);
+let q4 = new multChoice("Mult-Frage", "weshalb", dic, "Deutsch", 0, 0);
 
 
-let ps2 = new programmState("main", [q1, q2, q3], ["Mathe", "Deutsch"]);
+let ps2 = new programmState("main", [q1, q2, q3, q4], ["Mathe", "Deutsch"]);
 
 // Start of Programm
 console.log("Wilkommen zu der Lernapp");

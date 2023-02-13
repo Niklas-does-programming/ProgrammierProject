@@ -12,6 +12,17 @@ export class question{
     }
 }
 
+export class multChoice{
+    constructor(type,questionText,answerDic,category,asked,wrong){
+        this.type = type;                 // what type of question
+        this.questionText = questionText; // the question as string
+        this.answerDic = answerDic;     // the answer as string
+        this.category = category;         // what subject/category
+        this.asked = asked;               // how often the question got asked
+        this.wrong = wrong;               // how often the question got answered wrong
+    }
+}
+
 export class programmState{
     constructor(menu ,questionArray, categoryArray){
         this.menu = menu;
