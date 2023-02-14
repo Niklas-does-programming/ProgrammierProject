@@ -7,8 +7,8 @@ import { LocalStorage } from 'node-localstorage';
 const localStorage = new LocalStorage('./database'); //creates new Localstorage
 
 export function readData(keyToFile){
-    let test = localStorage.getItem(keyToFile); //sets JSON File in Localstorage
-    const data = JSON.parse(test); 
+    let file = localStorage.getItem(keyToFile); //sets JSON File in Localstorage
+    const data = JSON.parse(file); 
     return data
 }
 
