@@ -1,8 +1,8 @@
 // training with questions
-// functions for the application mode 
-// of the software 
+// functions for the application mode
+// of the software
 
-import {programmState,question,select} from "./utils.js";
+import { programmState, question, select, selectQuestion } from "./utils.js";
 
 import psp from 'prompt-sync-plus';
 import { red, blue, warning } from "./design.js";
@@ -15,38 +15,38 @@ let trainingString = "Sie befinden sich im Anwendungsmenü, was möchten Sie tun
                    red("[exit]") + " zurück zum Hauptmenü\n";
 ////////////////////
 
-export function handleTraining(ps){
-    let input = prompt(trainingString);
-    switch(input){
-        case "1":
-            let cat = chooseCategory(ps.categoryArray);
-            let question = getQuestions(ps,cat);
-            askQuestion(ps,question);
-            break;
-        case "2":
-
-            break;
-        case "exit":
-            break;
-        default:
-            console.log("Ungültige Eingabe");
-            handleTraining(ps);
-            break;
-    }
-    console.clear();
+export function handleTraining(ps) {
+  let input = prompt(trainingString);
+  switch (input) {
+    case "1":
+      let cat = chooseCategory(ps.categoryArray);
+      let question = getQuestions(ps, cat);
+      selectQuestion(numQuestions(question, cat), question);
+      askQuestion(ps, question);
+      //console.log(ps);
+      break;
+    case "2":
+      break;
+    case "exit":
+      break;
+    default:
+      console.log("Ungültige Eingabe");
+      handleTraining(ps);
+      break;
+  }
+  console.clear();
 }
 
 // get questions
-function getQuestions(ps,category){
-    let temp = select(ps,category);
-    return temp;
+function getQuestions(ps, category) {
+  let temp = select(ps, category);
+  return temp;
 }
 
 // number of questions to be asked
-function numQuestions(ps,array,category){
-    let num = prompt(`Anzahl an Fragen zum Thema ${category}: ${array.length}`);
-    // TODO function to choose questions
-    return num;
+function numQuestions(array, category) {
+  let num = prompt(`Anzahl an Fragen zum Thema ${category}: ${array.length}`);
+  return num;
 }
 
 // choose category
@@ -61,23 +61,36 @@ function chooseCategory(array){
 }
 
 // ask questions
-function askQuestion(ps,array){
-    let ask = array;
-    for(let i = 0;i<ask.length;i++){
-        let ans = prompt(`${ask[i].questionText}\n`);
-        if(ans === ask[i].answerText){
-            ask[i].asked += 1;
-            console.log("Die Anwort war richtig");
-        }
-        else{
-            ask[i].asked += 1;
-            ask[i].wrong += 1;
-            console.log("Die Anwort war nicht richtig");
+function askQuestion(ps, array) {
+  let ask = array;
+  let type;
+  for (let k = 0; k < ask.length; k++) {
+    type = ask[k].type;
+    switch (type) {
+      case "Frage":
+        let ans = prompt(`${ask[k].questionText}\n`);
+        if (ans === ask[k].answerText) {
+          ask[k].asked += 1;
+          console.log("Die Anwort war richtig");
+        } else {
+          ask[k].asked += 1;
+          ask[k].wrong += 1;
+          console.log("Die Anwort war nicht richtig");
         }
         console.clear();
+        break;
+      case "Mult-Frage":
+        console.log(ask[k].questionText);
+        let que;
+        for (let y = 0; y < ask[k].answerDic.length; y++) {
+          que = que + ask[k].answerDic[y];
+        }
+        console.log(que);
+        break;
     }
-    
-    for(let j = 0;j<ask.length;j++){
-        ps.questionArray.push(ask[j]);
-    }
+  }
+
+  for (let z = 0; z < ask.length; z++) {
+    ps.questionArray.push(ask[z]);
+  }
 }

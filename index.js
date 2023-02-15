@@ -1,5 +1,5 @@
 // main file
-// here the main programm loop will take place 
+// here the main programm loop will take place
 // and the inputs will be forwarded to the
 // responsible functions
 import {programmState, question, multipleChoice} from './utils.js';
@@ -10,8 +10,8 @@ import {red, blue, warning} from './design.js';
 
 const prompt = psp();
 
-import {handleManagement} from './management.js';
-import {handleTraining} from './training.js';
+import { handleManagement } from "./management.js";
+import { handleTraining } from "./training.js";
 
 // String def
 let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" + 
@@ -31,26 +31,23 @@ let input = prompt(mainString);
 
 // programm loop
 
-while(input !== "exit"){
-
-    switch(input){
-        case "1":
-            ps.menu = "ver";
-            console.clear();
-            handleManagement(ps2);
-            break;
-        case "2":
-            ps.menu = "anw";
-            console.clear();
-            handleTraining(ps2);
-            break;
-        default:
-            console.clear(); //raus oder rein noch abstimmen; mit schöner ohne besseres Verständnis
-            console.log(warning("Ungültige Eingabe"));
-            break;
-
-    }
-    input = prompt(mainString);
-}   
-//console.log(ps2);/////////////////////////////////////////////
-
+while (input !== "exit") {
+  switch (input) {
+    case "1":
+      ps.menu = "ver";
+      console.clear();
+      handleManagement(ps2);
+      break;
+    case "2":
+      ps.menu = "anw";
+      console.clear();
+      handleTraining(ps2);
+      break;
+    default:
+      console.log("Ungültige Eingabe");
+      break;
+  }
+  console.clear();
+  input = prompt(mainString);
+}
+//console.log(ps2); /////////////////////////////////////////////
