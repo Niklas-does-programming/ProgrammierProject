@@ -61,7 +61,6 @@ export function sortQuestions(questionArray){
 
 export function select(ps, criteria){
     let tmp = [];
-    console.log(ps);
     for(let i = ps.questionArray.length-1; i >= 0; i--){
         let index = Object.values(ps.questionArray[i]).indexOf(criteria);
         if(index > -1){

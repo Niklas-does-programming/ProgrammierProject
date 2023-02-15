@@ -45,15 +45,23 @@ export function handleManagement(ps){
 function addQuestion(tmp, category){
     let questionText = prompt("Wie soll die Frage lauten?");
     let answerText = prompt("Wie soll die Antwort lauten?");
-    let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
-    if(answer === "Ja"){
-        let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
-        tmp.push(newQuestion);
-    }else if(answer === "Nein"){
-        addQuestion(tmp, category);
-    }else if(answer === "exit"){
-        return;
-    }// TODO wenn ungültige eingabe dann mit selben daten frage neu
+    let answer;
+    let finished = false;
+    while(!finished){
+        answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
+        if(answer === "Ja"){
+            let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
+            tmp.push(newQuestion);
+            finished = true;
+        }else if(answer === "Nein"){
+            addQuestion(tmp, category);
+            finished = true;
+        }else if(answer === "exit"){
+            return;
+        }else{
+            console.log("ungültige Eingabe\n");
+        }
+    }
 }
 
 // delete question
@@ -67,7 +75,9 @@ function deleteQuestion(array){
     }
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
-    array.splice(index, 1);
+    if((0<= index < array.length) && !(isNaN(index))){
+        array.splice(index, 1);
+    }
 }
 
 // edit question
@@ -82,14 +92,22 @@ function editQuestion(array, category){
     let index = parseFloat(prompt(questionString))-1;
     let questionText = prompt("Wie soll die Frage lauten?\n");
     let answerText = prompt("Wie soll die Antwort lauten?\n");
-    let answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
-    if(answer === "Ja"){
-        let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
-        array[index] = newQuestion;
-    }else if(answer === "Nein"){
-        editQuestion(array, category);
-    }else if(answer === "exit"){
-        return;
+    let answer;
+    let finished = false;
+    while(!finished){
+        answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
+        if(answer === "Ja"){
+            let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
+            array[index] = newQuestion;
+            finished = true;
+        }else if(answer === "Nein"){
+            editQuestion(array, category);
+            finished = true;
+        }else if(answer === "exit"){
+            return;
+        }else{
+            console.log("ungültige Eingabe\n");
+        }
     }
 }
 
@@ -135,7 +153,7 @@ function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(prompt(categoryString))-1];
     let tmp = select(ps, category);
-    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n[1] Eine Frage löschen\n[2] Eine Frage bearbeiten\n[3] Eine Frage hinzufügen\n[4] Den Namen ändern\n[exit] Zurück zum Hauptmenü")
+    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n[1] Eine Frage löschen\n[2] Eine Frage bearbeiten\n[3] Eine Frage hinzufügen\n[4] Den Namen ändern\n[exit] Zurück zum Hauptmenü\n")
     switch(input){
         case "1":
             deleteQuestion(tmp);

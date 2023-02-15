@@ -32,6 +32,7 @@ let ps = new programmState("main", [], []); //[]dummy
 let ps2 = readData("defaultPS");
 
 // Start of Programm
+console.clear();
 console.log("Wilkommen zu der Lernapp");
 console.log(
   "Mit exit kommt man zurück zum Hauptmenü bzw. beendet das Programm"
@@ -57,6 +58,7 @@ while (input !== "exit") {
       console.log("Ungültige Eingabe");
       break;
   }
+  console.clear();
   input = prompt(mainString);
 }
 //console.log(ps2); /////////////////////////////////////////////
