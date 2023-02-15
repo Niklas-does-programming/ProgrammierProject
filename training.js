@@ -5,13 +5,14 @@
 import {programmState,question,select} from "./utils.js";
 
 import psp from 'prompt-sync-plus';
+import { red, blue, warning } from "./design.js";
 const prompt = psp();
 
 //String Def
 let trainingString = "Sie befinden sich im Anwendungsmenü, was möchten Sie tun?\n" + 
-                   "[1] Eine Kategorie für Fragen Auswählen\n" + 
-                   "[2] Fragen aus allen Kategorie\n" +
-                   "[exit] zurück zum Hauptmenü\n";
+                   blue("[1]") + " Eine Kategorie für Fragen Auswählen\n" + 
+                   blue("[2]") + " Fragen aus allen Kategorie\n" +
+                   red("[exit]") + " zurück zum Hauptmenü\n";
 ////////////////////
 
 export function handleTraining(ps){
@@ -52,7 +53,7 @@ function numQuestions(ps,array,category){
 function chooseCategory(array){
     let categoryString = "";
     for(let i = 0;i<array.length;i++){
-        categoryString = categoryString + `[${i+1}] ${array[i]}\n`;
+        categoryString = categoryString + blue(`[${i+1}]`) + `${array[i]}\n`;
     }
     categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString;
     let index = parseFloat(prompt(categoryString))-1;

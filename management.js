@@ -3,17 +3,18 @@
 // of questions
 
 import {programmState, question, select} from './utils.js';
-
+import chalk from 'chalk';
+import { red, blue, warning } from './design.js';
 import psp from 'prompt-sync-plus';
 const prompt = psp();
 
 
 // String definitions
 let managementString = "Sie befinden sich im Verwaltungsmenü, was möchten Sie tun?\n" + 
-                   "[1] Eine neue Kategorie hinzufügen\n" + 
-                   "[2] Eine vorhandene Kategorie bearbeiten (Namen/Fragen)\n" +
-                   "[3] Eine vorhandene Kategorie löschen\n" +
-                   "[exit] zurück zum Hauptmenü\n";
+                   blue("[1]") + " Eine neue Kategorie hinzufügen\n" + 
+                   blue("[2]") + " Eine vorhandene Kategorie bearbeiten (Namen/Fragen)\n" +
+                   blue("[3]") + " Eine vorhandene Kategorie löschen\n" +
+                   red("[exit]") + " zurück zum Hauptmenü\n";
 /////////////////////
 
 
@@ -63,7 +64,7 @@ function deleteQuestion(array){
     // TODO namen des arrays
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        questionString = blue(`[${i+1}]`) + ` ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
     }
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
@@ -76,7 +77,7 @@ function deleteQuestion(array){
 function editQuestion(array, category){
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${array[i].answerText}\n` + questionString;
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
@@ -135,7 +136,7 @@ function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(prompt(categoryString))-1];
     let tmp = select(ps, category);
-    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n[1] Eine Frage löschen\n[2] Eine Frage bearbeiten\n[3] Eine Frage hinzufügen\n[4] Den Namen ändern\n[exit] Zurück zum Hauptmenü")
+    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + "Den Namen ändern\n" + blue("[exit]") + "Zurück zum Hauptmenü")
     switch(input){
         case "1":
             deleteQuestion(tmp);
@@ -159,7 +160,7 @@ function editCategory(ps){
         case "exit":
             break;
         default:
-            console.log("ungültiger Input");
+            console.log(warning("ungültiger Input"));
             break;
     }
     for(let i = tmp.length-1; i >= 0; i--){

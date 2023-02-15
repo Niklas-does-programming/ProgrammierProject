@@ -4,8 +4,10 @@
 // responsible functions
 import {programmState, question, multipleChoice} from './utils.js';
 import { saveData, readData } from './readwrite.js';
-
+import chalk from 'chalk';
 import psp from 'prompt-sync-plus';
+import {red, blue, warning} from './design.js';
+
 const prompt = psp();
 
 import {handleManagement} from './management.js';
@@ -13,27 +15,17 @@ import {handleTraining} from './training.js';
 
 // String def
 let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" + 
-                   "[1] Zum Verwaltungsmenü\n" + 
-                   "[2] Zum Anwendungsmenü\n" +
-                   "[exit] Beenden der App\n";
+                   blue("[1]") + " Zum Verwaltungsmenü\n" + 
+                   blue("[2]") + " Zum Anwendungsmenü\n" +
+                   red("[exit]") + " Beenden der App\n";
 //////////////
 
 let ps = new programmState("main",[],[]); //[]dummy
-
-// const dic = {"deshalb" : true,"weil" : true, "Baum" : false};
-
-// let q1 = new question("Frage", "warum", "darum", "Mathe", 0, 0);
-// let q2 = new question("Frage", "waru", "daru", "Mathe", 0, 0);
-// let q3 = new question("Frage", "weshalb", "deshalb", "Deutsch", 0, 0);
-// let q4 = new multipleChoice("Mult-Frage", "weshalb", {"deshalb" : true,"weil" : true, "Baum" : false}, "Deutsch", 0, 0);
-
-
-// let ps2 = new programmState("main", [q1, q2, q3, q4], ["Mathe", "Deutsch"]);
 let ps2 = readData("defaultPS")
 
 // Start of Programm
-console.log("Wilkommen zu der Lernapp");
-console.log("Mit exit kommt man zurück zum Hauptmenü bzw. beendet das Programm");
+console.log(blue("Willkommen") + " in der Lernapp!");
+console.log("Mit" + red(" [exit}") + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
 
 let input = prompt(mainString);
 
@@ -53,7 +45,8 @@ while(input !== "exit"){
             handleTraining(ps2);
             break;
         default:
-            console.log("Ungültige Eingabe");
+            console.clear(); //raus oder rein noch abstimmen; mit schöner ohne besseres Verständnis
+            console.log(warning("Ungültige Eingabe"));
             break;
 
     }
