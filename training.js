@@ -2,7 +2,7 @@
 // functions for the application mode
 // of the software
 
-import { programmState, question, select } from "./utils.js";
+import { programmState, question, select, selectQuestion } from "./utils.js";
 
 import psp from "prompt-sync-plus";
 const prompt = psp();
@@ -21,6 +21,7 @@ export function handleTraining(ps) {
     case "1":
       let cat = chooseCategory(ps.categoryArray);
       let question = getQuestions(ps, cat);
+      selectQuestion(numQuestions(question, cat), question);
       askQuestion(ps, question);
       //console.log(ps);
       break;
@@ -43,9 +44,8 @@ function getQuestions(ps, category) {
 }
 
 // number of questions to be asked
-function numQuestions(ps, array, category) {
+function numQuestions(array, category) {
   let num = prompt(`Anzahl an Fragen zum Thema ${category}: ${array.length}`);
-  // TODO function to choose questions
   return num;
 }
 
