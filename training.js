@@ -19,6 +19,7 @@ export function handleTraining(ps) {
   let input = prompt(trainingString);
   switch (input) {
     case "1":
+      console.clear();
       let cat = chooseCategory(ps.categoryArray);
       let question = getQuestions(ps, cat);
       selectQuestion(numQuestions(question, cat), question);
@@ -46,6 +47,7 @@ function getQuestions(ps, category) {
 // number of questions to be asked
 function numQuestions(array, category) {
   let num = prompt(`Anzahl an Fragen zum Thema ${category}: ${array.length}`);
+  console.clear();
   return num;
 }
 
@@ -66,9 +68,10 @@ function askQuestion(ps, array) {
   let type;
   for (let k = 0; k < ask.length; k++) {
     type = ask[k].type;
+    let ans = "";
     switch (type) {
       case "Frage":
-        let ans = prompt(`${ask[k].questionText}\n`);
+        ans = prompt(`${ask[k].questionText}\n`);
         if (ans === ask[k].answerText) {
           ask[k].asked += 1;
           console.log("Die Anwort war richtig");
@@ -77,15 +80,38 @@ function askQuestion(ps, array) {
           ask[k].wrong += 1;
           console.log("Die Anwort war nicht richtig");
         }
-        console.clear();
         break;
       case "Mult-Frage":
         console.log(ask[k].questionText);
-        let que;
-        for (let y = 0; y < ask[k].answerDic.length; y++) {
-          que = que + ask[k].answerDic[y];
+        let que = [];
+        let answ = [];
+        for (let key in ask[k].answerDic) {
+          que.push(key);
+          answ.push(ask[k].answerDic[key]);
         }
-        console.log(que);
+        let quetxt = "";
+        for (let i = 0; i < que.length; i++) {
+          quetxt = quetxt + que[i] + " ";
+        }
+        ans = prompt(`${quetxt}\n`);
+        let temp = -1;
+        for (let j = 0; j < que.length; j++) {
+          if (ans === que[j]) {
+            temp = j;
+          }
+        }
+        if (temp === -1) {
+          ask[k].asked += 1;
+          ask[k].wrong += 1;
+          console.log("Die Anwort war nicht richtig");
+        } else if (answ[temp] === true) {
+          ask[k].asked += 1;
+          console.log("Die Anwort war richtig");
+        } else {
+          ask[k].asked += 1;
+          ask[k].wrong += 1;
+          console.log("Die Anwort war nicht richtig");
+        }
         break;
     }
   }
@@ -93,4 +119,5 @@ function askQuestion(ps, array) {
   for (let z = 0; z < ask.length; z++) {
     ps.questionArray.push(ask[z]);
   }
+  console.clear();
 }
