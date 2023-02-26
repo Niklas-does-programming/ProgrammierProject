@@ -27,6 +27,9 @@ export function handleTraining(ps) {
       //console.log(ps);
       break;
     case "2":
+      let quest = ps.questionArray;
+      selectQuestion(numQuestions(quest, "Alle"), quest);
+      askQuestion(ps, quest);
       break;
     case "exit":
       break;
@@ -46,7 +49,9 @@ function getQuestions(ps, category) {
 
 // number of questions to be asked
 function numQuestions(array, category) {
-  let num = prompt(`Anzahl an Fragen zum Thema ${category}: ${array.length}`);
+  let num = prompt(
+    `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
+  );
   console.clear();
   return num;
 }
