@@ -2,7 +2,7 @@
 // functions for editing the existing database 
 // of questions
 
-import {programmState, question, select} from './utils.js';
+import {programmState, question, select, multipleChoice} from './utils.js';
 
 import psp from 'prompt-sync-plus';
 const prompt = psp();
@@ -40,7 +40,8 @@ export function handleManagement(ps){
 }
 
 // add question
-// takes a question and programstate and adds 
+// takes a temporary array and the category, 
+// this question will be added to and adds 
 // the question to the array of existing questions
 function addQuestion(tmp, category){
     let questionText = prompt("Wie soll die Frage lauten?");
@@ -64,6 +65,35 @@ function addQuestion(tmp, category){
     }
 }
 
+function addMultiQuestion(tmp, category){
+    let questionText = prompt("Wie soll die Frage lauten?\n");
+    let answer;
+    let answerDict = {};
+    let finished = false;
+    while (!finished){
+        answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
+        if(answer === "Ja"){
+            let newAnswerPos = prompt("Wie soll diese lauten?\n");
+            let truthVal = prompt("Ist diese Antwort richtig?[Ja][Nein]\n");
+            if(truthVal === "Ja"){
+                answerDict[newAnswerPos] = true;
+            }else if (truthVal === "Nein"){
+                answerDict[newAnswerPos] = false;
+            }else{
+                console.log("ungültige Eingabe");
+            }
+        }else if (answer === "Nein"){
+            finished = true;
+        }else if (answer === "exit"){
+            return;
+        }else{
+            console.log("ungültige Eingabe");
+        }
+    }
+    let question = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0);
+    tmp.push(question);
+}
+
 // delete question
 // takes an array and an index on which the 
 // element to be deleted lies and deletes it
@@ -71,10 +101,22 @@ function deleteQuestion(array){
     // TODO namen des arrays
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        if (array[i].type === "Frage"){
+            questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        }else if(array[i].type === "Mult-Frage"){
+            let answers = "";
+            for (let key in array[i].answerDic){
+                answers = key + " " + answers;
+            }
+            questionString = `[${i+1}] ${array[i].questionText}, ${answers}\n` + questionString;
+        }
     }
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
+    if (isNaN(index)){
+        console.log("ungültige Eingabe");
+        return;
+    }
     if((0<= index < array.length) && !(isNaN(index))){
         array.splice(index, 1);
     }
@@ -86,27 +128,67 @@ function deleteQuestion(array){
 function editQuestion(array, category){
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
-        questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        if (array[i].type === "Frage"){
+            questionString = `[${i+1}] ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+        }else if(array[i].type === "Mult-Frage"){
+            let answers = "";
+            for (let key in array[i].answerDic){
+                answers = key + " " + answers;
+            }
+            questionString = `[${i+1}] ${array[i].questionText}, ${answers}\n` + questionString;
+        }
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
+    if (isNaN(index)){
+        console.log("ungültige Eingabe");
+        return;
+    }
     let questionText = prompt("Wie soll die Frage lauten?\n");
-    let answerText = prompt("Wie soll die Antwort lauten?\n");
-    let answer;
-    let finished = false;
-    while(!finished){
-        answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
-        if(answer === "Ja"){
-            let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
-            array[index] = newQuestion;
-            finished = true;
-        }else if(answer === "Nein"){
-            editQuestion(array, category);
-            finished = true;
-        }else if(answer === "exit"){
-            return;
-        }else{
-            console.log("ungültige Eingabe\n");
+    if (array[index].type === "Frage"){
+        let answerText = prompt("Wie soll die Antwort lauten?\n");
+        let answer;
+        let finished = false;
+        while(!finished){
+            answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
+            if(answer === "Ja"){
+                let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
+                array[index] = newQuestion;
+                finished = true;
+            }else if(answer === "Nein"){
+                editQuestion(array, category);
+                finished = true;
+            }else if(answer === "exit"){
+                return;
+            }else{
+                console.log("ungültige Eingabe\n");
+            }
+        }
+    }else if (array[index].type === "Mult-Frage"){
+        let answerDict = {};
+        let answer;
+        let finished = false;
+        while(!finished){
+            answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
+            if(answer === "Ja"){
+                let newAnswerPos = prompt("Wie soll diese lauten?\n");
+                let truthVal = prompt("Ist diese Antwort richtig?[Ja][Nein]\n");
+                if(truthVal === "Ja"){
+                    answerDict[newAnswerPos] = true;
+                }else if (truthVal === "Nein"){
+                    answerDict[newAnswerPos] = false;
+                }else{
+                    console.log("ungültige Eingabe");
+                }
+            }else if (answer === "Nein"){
+                finished = true;
+                let newMultQuestion = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0);
+                array[index] = newMultQuestion;
+            }else if (answer === "exit"){
+                return;
+            }else{
+                console.log("ungültige Eingabe");
+            }
         }
     }
 }
@@ -153,7 +235,7 @@ function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(prompt(categoryString))-1];
     let tmp = select(ps, category);
-    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n[1] Eine Frage löschen\n[2] Eine Frage bearbeiten\n[3] Eine Frage hinzufügen\n[4] Den Namen ändern\n[exit] Zurück zum Hauptmenü\n")
+    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n[1] Eine Frage löschen\n[2] Eine Frage bearbeiten\n[3] Eine Frage hinzufügen\n[4] Eine Multiple Choice Frage hinzufügen\n[5] Den Namen ändern\n[exit] Zurück zum Hauptmenü\n")
     switch(input){
         case "1":
             deleteQuestion(tmp);
@@ -165,6 +247,10 @@ function editCategory(ps){
             addQuestion(tmp, category);
             break;
         case "4":
+            addMultiQuestion(tmp, category);
+            break;
+        case "5":
+            let newName = prompt("Wie soll der neue Name lauten?\n");
             let isCategory = element => element === category;
             let index = ps.categoryArray.findIndex(isCategory);
             ps.categoryArray[index] = newName;
