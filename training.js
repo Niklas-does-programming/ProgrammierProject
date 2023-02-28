@@ -22,13 +22,13 @@ export function handleTraining(ps) {
       console.clear();
       let cat = chooseCategory(ps.categoryArray);
       let question = getQuestions(ps, cat);
-      selectQuestion(numQuestions(question, cat), question);
+      selectQuestion(numQuestions(question, cat), question, ps);
       askQuestion(ps, question);
       //console.log(ps);
       break;
     case "2":
       let quest = ps.questionArray;
-      selectQuestion(numQuestions(quest, "Alle"), quest);
+      selectQuestion(numQuestions(quest, "Alle"), quest, ps);
       askQuestion(ps, quest);
       break;
     case "exit":
@@ -53,7 +53,7 @@ function numQuestions(array, category) {
     `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
   );
   console.clear();
-  return num;
+  return parseInt(num);
 }
 
 // choose category

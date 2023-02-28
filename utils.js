@@ -33,15 +33,30 @@ export class programmState {
 
 // statistics
 export function stats(questionArray) {
-  let statArray;
+  let statArray = [[]];
   for (let i = 0; i < questionArray.length; i++) {
-    let ask = questionArray.asked[i];
-    let wrg = questionArray.wrong[i];
-    statArray[i][0] = questionArray.questionText[i];
+    let ask = questionArray[i].asked;
+    let wrg = questionArray[i].wrong;
+    let arr = [];
+    arr[0] = questionArray[i].questionText;
     if (wrg === 0) {
-      statArray[i][1] = ask; //geg ändern wegen gewichtung mit anz gefragt
+      arr[1] = ask;
+      //statArray[i][1] = ask;
     } else {
-      statArray[i][1] = ask / wrg;
+      arr[1] = ask / wrg;
+      //statArray[i][1] = ask / wrg;
+    }
+    statArray[i] = arr;
+  }
+  for (let j = 0; j < statArray.length; j++) {
+    for (let k = 0; k < statArray.length - j - 1; k++) {
+      let temp = statArray[k][1];
+      let temptxt = statArray[k][0];
+      if (temp > statArray[k + 1][1]) {
+        statArray[k] = statArray[k + 1];
+        statArray[k + 1][0] = temptxt;
+        statArray[k + 1][1] = temp;
+      }
     }
   }
   return statArray;
@@ -58,19 +73,34 @@ export function sortQuestions(questionArray) {
   return sortArray;
 }
 
-export function select(ps, criteria){
-    let tmp = [];
-    for(let i = ps.questionArray.length-1; i >= 0; i--){
-        let index = Object.values(ps.questionArray[i]).indexOf(criteria);
-        if(index > -1){
-            let element = ps.questionArray.splice(i,1);
-            tmp.push(element[0]);
-        }
+export function select(ps, criteria) {
+  let tmp = [];
+  for (let i = ps.questionArray.length - 1; i >= 0; i--) {
+    let index = Object.values(ps.questionArray[i]).indexOf(criteria);
+    if (index > -1) {
+      let element = ps.questionArray.splice(i, 1);
+      tmp.push(element[0]);
     }
+  }
   return tmp;
 }
 
 //choose Question
-export function selectQuestion(number, array) {
+export function selectQuestion(number, array, ps) {
   let temp = [];
+  let arr = array;
+  let statarr = stats(array);
+  statarr = statarr.splice(0, number);
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < statarr.length; j++) {
+      if (arr[i].questionText === statarr[j][0]) {
+        temp.push(array[i]);
+        arr.splice(i, 1);
+      }
+    }
+  }
+  for (let z = 0; z < arr.length; z++) {
+    ps.questionArray.push(arr[z]);
+  }
+  return temp;
 }
