@@ -25,7 +25,7 @@ let ps2 = readData("defaultPS")
 
 // Start of Programm
 console.log(blue("Willkommen") + " in der Lernapp!");
-console.log("Mit" + red(" [exit}") + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
+console.log("Mit" + red(" [exit]") + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
 
 let input = prompt(mainString);
 

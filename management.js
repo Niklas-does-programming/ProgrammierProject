@@ -22,6 +22,7 @@ let managementString = "Sie befinden sich im Verwaltungsmenü, was möchten Sie 
 export function handleManagement(ps){
     // TODO menustruktur ausgeben und exit abfragen
     let input = prompt(managementString);
+    console.clear();
     switch(input){
         case "1":
             addCategory(ps);
@@ -73,7 +74,7 @@ function addMultiQuestion(tmp, category){
     let answerDict = {};
     let finished = false;
     while (!finished){
-        answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
+        answer = prompt("Möchten Sie eine Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
         if(answer === "Ja"){
             let newAnswerPos = prompt("Wie soll diese lauten?\n");
             let truthVal = prompt("Ist diese Antwort richtig?[Ja][Nein]\n");
@@ -108,18 +109,18 @@ function deleteQuestion(array){
         }else if(array[i].type === "Mult-Frage"){
             let answers = "";
             for (let key in array[i].answerDic){
-                answers = key + " " + answers;
+                answers = key + ":" + array[i].answerDic[key] + ", " + answers;
             }
-            questionString = `[${i+1}] ${array[i].questionText}, ${answers}\n` + questionString;
+            questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${answers}\n` + questionString;
         }
     }
-    questionString = "Welche Frage möchten Sie löschen?\n" + questionString;
+    questionString = "Welche Frage möchten Sie löschen?\n" + questionString + "[exit]\n";
     let index = parseFloat(prompt(questionString))-1;
     if (isNaN(index)){
         console.log("ungültige Eingabe");
         return;
     }
-    if((0<= index < array.length) && !(isNaN(index))){
+    if((0<= index < array.length)){
         array.splice(index, 1);
     }
 }
@@ -131,13 +132,13 @@ function editQuestion(array, category){
     let questionString = "";
     for(let i = array.length - 1; i>=0;i--){
         if (array[i].type === "Frage"){
-            questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${array[i].answerText}\n` + questionString;
+            questionString = blue(`[${i+1}]`) + ` ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
         }else if(array[i].type === "Mult-Frage"){
             let answers = "";
             for (let key in array[i].answerDic){
-                answers = key + " " + answers;
+                answers = key + ":" + array[i].answerDic[key] + ", " + answers;
             }
-            questionString = `[${i+1}] ${array[i].questionText}, ${answers}\n` + questionString;
+            questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${answers}\n` + questionString;
         }
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
@@ -237,7 +238,8 @@ function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(prompt(categoryString))-1];
     let tmp = select(ps, category);
-let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + blue("[exit]") + " Zurück zum Hauptmenü\n")
+    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + blue("[exit]") + " Zurück zum Hauptmenü\n");
+    console.clear();
     switch(input){
         case "1":
             deleteQuestion(tmp);
