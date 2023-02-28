@@ -3,7 +3,7 @@
 // of questions
 
 import chalk from 'chalk';
-import { red, blue, warning } from './design.js';
+import { exit, blue, green, warning, black } from './design.js';
 import {programmState, question, select, multipleChoice} from './utils.js';
 
 import psp from 'prompt-sync-plus';
@@ -15,7 +15,7 @@ let managementString = "Sie befinden sich im Verwaltungsmenü, was möchten Sie 
                    blue("[1]") + " Eine neue Kategorie hinzufügen\n" + 
                    blue("[2]") + " Eine vorhandene Kategorie bearbeiten (Namen/Fragen)\n" +
                    blue("[3]") + " Eine vorhandene Kategorie löschen\n" +
-                   red("[exit]") + " zurück zum Hauptmenü\n";
+                   exit + " zurück zum Hauptmenü\n";
 /////////////////////
 
 
@@ -36,7 +36,7 @@ export function handleManagement(ps){
         case "exit":
             break;
         default:
-            console.log("ungültige Eingabe");
+            console.log(warning("ungültige Eingabe"));
             handleManagement(ps);
             break;
     }
@@ -52,7 +52,7 @@ function addQuestion(tmp, category){
     let answer;
     let finished = false;
     while(!finished){
-        answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
+        answer = prompt("Ist das so okay?\nFrage:" + black(questionText) + " \nAntwort:" + green(answerText) + "\n" + blue("[Ja][Nein]") + exit + "\n")
         if(answer === "Ja"){
             let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
             tmp.push(newQuestion);
@@ -63,8 +63,7 @@ function addQuestion(tmp, category){
         }else if(answer === "exit"){
             return;
         }else{
-            console.log("ungültige Eingabe\n");
-        }
+            console.log(warning("ungültige Eingabe"));        }
     }
 }
 
@@ -74,23 +73,23 @@ function addMultiQuestion(tmp, category){
     let answerDict = {};
     let finished = false;
     while (!finished){
-        answer = prompt("Möchten Sie eine Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
+        answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?"+ blue("[Ja][Nein]") + exit + "\n")
         if(answer === "Ja"){
             let newAnswerPos = prompt("Wie soll diese lauten?\n");
-            let truthVal = prompt("Ist diese Antwort richtig?[Ja][Nein]\n");
+            let truthVal = prompt("Ist diese Antwort richtig?"+ blue("[Ja][Nein]")+ "\n");
             if(truthVal === "Ja"){
                 answerDict[newAnswerPos] = true;
             }else if (truthVal === "Nein"){
                 answerDict[newAnswerPos] = false;
             }else{
-                console.log("ungültige Eingabe");
+                console.log(warning("ungültige Eingabe"));
             }
         }else if (answer === "Nein"){
             finished = true;
         }else if (answer === "exit"){
             return;
         }else{
-            console.log("ungültige Eingabe");
+            console.log(warning("ungültige Eingabe"));
         }
     }
     let question = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0);
@@ -117,7 +116,7 @@ function deleteQuestion(array){
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString + "[exit]\n";
     let index = parseFloat(prompt(questionString))-1;
     if (isNaN(index)){
-        console.log("ungültige Eingabe");
+        console.log(warning("ungültige Eingabe"));
         return;
     }
     if((0<= index < array.length)){
@@ -144,7 +143,7 @@ function editQuestion(array, category){
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
     let index = parseFloat(prompt(questionString))-1;
     if (isNaN(index)){
-        console.log("ungültige Eingabe");
+        console.log(warning("ungültige Eingabe"));
         return;
     }
     let questionText = prompt("Wie soll die Frage lauten?\n");
@@ -153,7 +152,7 @@ function editQuestion(array, category){
         let answer;
         let finished = false;
         while(!finished){
-            answer = prompt(`Ist das so okay?\n Frage: ${questionText}\n Antwort: ${answerText}\n Ja/Nein/exit\n`);
+            answer = prompt("Ist das so okay?\n Frage:" + black(questionText) + " \nAntwort:" + green(answerText) + blue("[Ja][Nein]") + exit + "\n");
             if(answer === "Ja"){
                 let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
                 array[index] = newQuestion;
@@ -164,7 +163,7 @@ function editQuestion(array, category){
             }else if(answer === "exit"){
                 return;
             }else{
-                console.log("ungültige Eingabe\n");
+                console.log(warning("ungültige Eingabe"));
             }
         }
     }else if (array[index].type === "Mult-Frage"){
@@ -172,16 +171,16 @@ function editQuestion(array, category){
         let answer;
         let finished = false;
         while(!finished){
-            answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?[Ja][Nein][exit]\n")
+            answer = prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?"+ blue("[Ja][Nein]") + exit + "\n");
             if(answer === "Ja"){
                 let newAnswerPos = prompt("Wie soll diese lauten?\n");
-                let truthVal = prompt("Ist diese Antwort richtig?[Ja][Nein]\n");
+                let truthVal = prompt("Ist diese Antwort richtig?" + blue("[Ja][Nein]\n"));
                 if(truthVal === "Ja"){
                     answerDict[newAnswerPos] = true;
                 }else if (truthVal === "Nein"){
                     answerDict[newAnswerPos] = false;
                 }else{
-                    console.log("ungültige Eingabe");
+                    console.log(warning("ungültige Eingabe"));
                 }
             }else if (answer === "Nein"){
                 finished = true;
@@ -190,7 +189,7 @@ function editQuestion(array, category){
             }else if (answer === "exit"){
                 return;
             }else{
-                console.log("ungültige Eingabe");
+                console.log(warning("ungültige Eingabe"));
             }
         }
     }
@@ -204,7 +203,7 @@ function editQuestion(array, category){
 function addCategory(ps){
     let newCategory = prompt("Wie soll die neue Kategorie heißen?\n");
     ps.categoryArray.push(newCategory);
-    console.log(`neue Kategorie '${newCategory}' hinzugefügt`);
+    console.log("neue Kategorie " + black(newCategory)+" hinzugefügt");
 }
 
 // delete category
@@ -238,8 +237,7 @@ function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(prompt(categoryString))-1];
     let tmp = select(ps, category);
-    let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + blue("[exit]") + " Zurück zum Hauptmenü\n");
-    console.clear();
+let input = prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n")
     switch(input){
         case "1":
             deleteQuestion(tmp);
