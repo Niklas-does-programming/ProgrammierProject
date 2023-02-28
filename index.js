@@ -6,7 +6,7 @@ import {programmState, question, multipleChoice} from './utils.js';
 import { saveData, readData } from './readwrite.js';
 import chalk from 'chalk';
 import psp from 'prompt-sync-plus';
-import {red, blue, warning} from './design.js';
+import {exit, blue, green, warning, black} from './design.js';
 
 const prompt = psp();
 
@@ -17,20 +17,19 @@ import { handleTraining } from "./training.js";
 let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" + 
                    blue("[1]") + " Zum Verwaltungsmenü\n" + 
                    blue("[2]") + " Zum Anwendungsmenü\n" +
-                   red("[exit]") + " Beenden der App\n";
+                   exit + " Beenden der App\n";
 //////////////
-
+                  
 let ps = new programmState("main",[],[]); //[]dummy
 let ps2 = readData("defaultPS")
 
 // Start of Programm
 console.log(blue("Willkommen") + " in der Lernapp!");
-console.log("Mit" + red(" [exit}") + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
+console.log("Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
 
 let input = prompt(mainString);
 
 // programm loop
-
 while (input !== "exit") {
   switch (input) {
     case "1":
@@ -44,7 +43,7 @@ while (input !== "exit") {
       handleTraining(ps2);
       break;
     default:
-      console.log("Ungültige Eingabe");
+      console.log(warning("Ungültige Eingabe"));
       break;
   }
   console.clear();

@@ -5,14 +5,14 @@
 import { programmState, question, select, selectQuestion } from "./utils.js";
 
 import psp from 'prompt-sync-plus';
-import { red, blue, warning } from "./design.js";
+import {blue, warning, exit } from "./design.js";
 const prompt = psp();
 
 //String Def
 let trainingString = "Sie befinden sich im Anwendungsmenü, was möchten Sie tun?\n" + 
                    blue("[1]") + " Eine Kategorie für Fragen Auswählen\n" + 
                    blue("[2]") + " Fragen aus allen Kategorie\n" +
-                   red("[exit]") + " zurück zum Hauptmenü\n";
+                   exit + " zurück zum Hauptmenü\n";
 ////////////////////
 
 export function handleTraining(ps) {
