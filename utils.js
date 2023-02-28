@@ -86,6 +86,7 @@ export function select(ps, criteria) {
 }
 
 //choose Question
+//Funktioniert Aktuell nicht!!!
 export function selectQuestion(number, array, ps) {
   let temp = [];
   let arr = array;
