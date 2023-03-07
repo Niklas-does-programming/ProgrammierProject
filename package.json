@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Niklas-does-programming/ProgrammierProject#readme",
   "dependencies": {
     "chalk": "^5.2.0",
+    "enquirer": "^2.3.6",
     "jsonfile": "^6.1.0",
     "node-localstorage": "^2.2.1",
     "prompt-sync-plus": "^1.0.2"

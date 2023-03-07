@@ -5,7 +5,7 @@
 import { programmState, question, select, selectQuestion } from "./utils.js";
 
 import psp from "prompt-sync-plus";
-import { blue, warning, exit } from "./design.js";
+import { blue, warning, exit, yellow,whitebg } from "./design.js";
 const prompt = psp();
 
 //String Def
@@ -80,7 +80,9 @@ function askQuestion(ps, array) {
     let ans = "";
     switch (type) {
       case "Frage":
-        ans = prompt(`${ask[k].questionText}\n`);
+        console.clear();
+        console.log(whitebg("Frage:"));
+        ans = prompt(yellow(`${ask[k].questionText}\n`));
         if (ans === ask[k].answerText) {
           ask[k].asked += 1;
           console.log("Die Anwort war richtig");
@@ -91,7 +93,9 @@ function askQuestion(ps, array) {
         }
         break;
       case "Mult-Frage":
-        console.log(ask[k].questionText);
+        console.clear();
+        console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
+        console.log(yellow(ask[k].questionText));
         let que = [];
         let answ = [];
         for (let key in ask[k].answerDic) {
