@@ -8,7 +8,4 @@ const black = chalk.black
 const yellow = chalk.yellow
 const whitebg = chalk.bgWhite
 
-
-
-
 export{exit, blue, warning, green, black, yellow,whitebg}

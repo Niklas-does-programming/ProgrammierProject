@@ -105,3 +105,18 @@ export function selectQuestion(number, array, ps) {
   }
   return temp;
 }
+
+import pkg from 'enquirer';
+const { Input } = pkg;
+
+export async function prompt(m){
+  const prompt = new Input({
+  message: m,
+  initial: "Enter"
+  });
+  let answer_
+  await prompt.run()
+  .then((answer => {answer_= answer}))
+  .catch(console.log);
+  return answer_
+}

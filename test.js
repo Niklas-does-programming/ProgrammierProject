@@ -1,10 +1,16 @@
-import pkg from 'enquirer';
-const { Input } = pkg;
-const prompt = new Input({
-  message: 'What is your username?',
-  initial: 'jonschlinkert'
-});
+// import pkg from 'enquirer';
+// const { Input } = pkg;
 
-prompt.run()
-  .then(answer => console.log('Answer:', answer))
-  .catch(console.log);
+// export async function prompt(m,i){
+//     const prompt = new Input({
+//     message: m,
+//     initial: i
+//     });
+//     let answer_
+//     await prompt.run()
+//     .then((answer => {answer_= answer}))
+//     .catch(console.log);
+//     return answer_
+// }
+
+

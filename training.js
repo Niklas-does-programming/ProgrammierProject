@@ -2,11 +2,9 @@
 // functions for the application mode
 // of the software
 
-import { programmState, question, select, selectQuestion } from "./utils.js";
-
-import psp from "prompt-sync-plus";
+import { programmState, question, select, selectQuestion,prompt } from "./utils.js";
 import { blue, warning, exit, yellow,whitebg } from "./design.js";
-const prompt = psp();
+
 
 //String Def
 let trainingString =
@@ -19,8 +17,8 @@ let trainingString =
   " zurück zum Hauptmenü\n";
 ////////////////////
 
-export function handleTraining(ps) {
-  let input = prompt(trainingString);
+export async function handleTraining(ps) {
+  let input = await prompt(trainingString);
   switch (input) {
     case "1":
       console.clear();
@@ -52,8 +50,8 @@ function getQuestions(ps, category) {
 }
 
 // number of questions to be asked
-function numQuestions(array, category) {
-  let num = prompt(
+async function numQuestions(array, category) {
+  let num = await prompt(
     `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
   );
   console.clear();
@@ -61,18 +59,18 @@ function numQuestions(array, category) {
 }
 
 // choose category
-function chooseCategory(array) {
+async function chooseCategory(array) {
   let categoryString = "";
   for (let i = 0; i < array.length; i++) {
     categoryString = categoryString + blue(`[${i + 1}]`) + `${array[i]}\n`;
   }
   categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString;
-  let index = parseFloat(prompt(categoryString)) - 1;
+  let index = parseFloat(await prompt(categoryString)) - 1;
   return array[index];
 }
 
 // ask questions
-function askQuestion(ps, array) {
+async function askQuestion(ps, array) {
   let ask = array;
   let type;
   for (let k = 0; k < ask.length; k++) {
@@ -82,7 +80,7 @@ function askQuestion(ps, array) {
       case "Frage":
         console.clear();
         console.log(whitebg("Frage:"));
-        ans = prompt(yellow(`${ask[k].questionText}\n`));
+        ans = await prompt(yellow(`${ask[k].questionText}\n`));
         if (ans === ask[k].answerText) {
           ask[k].asked += 1;
           console.log("Die Anwort war richtig");
@@ -94,43 +92,44 @@ function askQuestion(ps, array) {
         break;
       case "Mult-Frage":
         console.clear();
-        console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
-        console.log(yellow(ask[k].questionText));
-        let que = [];
-        let answ = [];
-        for (let key in ask[k].answerDic) {
-          que.push(key);
-          answ.push(ask[k].answerDic[key]);
-        }
-        let quetxt = "";
-        for (let i = 0; i < que.length; i++) {
-          quetxt = quetxt + que[i] + " ";
-        }
-        ans = prompt(`${quetxt}\n`);
-        let temp = -1;
-        for (let j = 0; j < que.length; j++) {
-          if (ans === que[j]) {
-            temp = j;
-          }
-        }
-        if (temp === -1) {
-          ask[k].asked += 1;
-          ask[k].wrong += 1;
-          console.log("Die Anwort war nicht richtig");
-        } else if (answ[temp] === true) {
-          ask[k].asked += 1;
-          console.log("Die Anwort war richtig");
-        } else {
-          ask[k].asked += 1;
-          ask[k].wrong += 1;
-          console.log("Die Anwort war nicht richtig");
-        }
-        break;
-    }
-  }
+        console.log("mult choice in arbeit")
+  //       console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
+  //       console.log(yellow(ask[k].questionText));
+  //       let que = [];
+  //       let answ = [];
+  //       for (let key in ask[k].answerDic) {
+  //         que.push(key);
+  //         answ.push(ask[k].answerDic[key]);
+  //       }
+  //       let quetxt = "";
+  //       for (let i = 0; i < que.length; i++) {
+  //         quetxt = quetxt + que[i] + " ";
+  //       }
+  //       ans = prompt(`${quetxt}\n`);
+  //       let temp = -1;
+  //       for (let j = 0; j < que.length; j++) {
+  //         if (ans === que[j]) {
+  //           temp = j;
+  //         }
+  //       }
+  //       if (temp === -1) {
+  //         ask[k].asked += 1;
+  //         ask[k].wrong += 1;
+  //         console.log("Die Anwort war nicht richtig");
+  //       } else if (answ[temp] === true) {
+  //         ask[k].asked += 1;
+  //         console.log("Die Anwort war richtig");
+  //       } else {
+  //         ask[k].asked += 1;
+  //         ask[k].wrong += 1;
+  //         console.log("Die Anwort war nicht richtig");
+  //       }
+  //       break;
+  //   }
+   }
 
-  for (let z = 0; z < ask.length; z++) {
-    ps.questionArray.push(ask[z]);
-  }
-  console.clear();
+  // for (let z = 0; z < ask.length; z++) {
+  //   ps.questionArray.push(ask[z]);
+   }
+  // console.clear();
 }

@@ -4,14 +4,11 @@
 // responsible functions
 import {programmState, question, multipleChoice} from './utils.js';
 import { saveData, readData } from './readwrite.js';
-import chalk from 'chalk';
-import psp from 'prompt-sync-plus';
 import {exit, blue, green, warning, black} from './design.js';
-
-const prompt = psp();
-
 import { handleManagement } from "./management.js";
 import { handleTraining } from "./training.js";
+import { prompt } from './utils.js'
+
 
 // String def
 let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" + 
@@ -19,15 +16,20 @@ let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
                    blue("[2]") + " Zum Anwendungsmenü\n" +
                    exit + " Beenden der App\n";
 //////////////
+
+// String def
+// let i = "Enter"
+//////////////
                   
 let ps = new programmState("main",[],[]); //[]dummy
 let ps2 = readData("defaultPS")
 
 // Start of Programm
+console.clear();
 console.log(blue("Willkommen") + " in der Lernapp!");
 console.log("Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
 
-let input = prompt(mainString);
+let input = await prompt(mainString);
 
 // programm loop
 while (input !== "exit") {
@@ -47,6 +49,6 @@ while (input !== "exit") {
       break;
   }
   console.clear();
-  input = prompt(mainString);
+  input = await prompt(mainString);
 }
 //console.log(ps2); /////////////////////////////////////////////
