@@ -109,14 +109,10 @@ export function selectQuestion(number, array, ps) {
 import pkg from 'enquirer';
 const { Input } = pkg;
 
-export async function prompt(m){
+export async function prompt(m) {
   const prompt = new Input({
   message: m,
-  initial: "Enter"
+  initial: 'Enter',
   });
-  let answer_
-  await prompt.run()
-  .then((answer => {answer_= answer}))
-  .catch(console.log);
-  return answer_
-}
+  return await prompt.run();
+  }

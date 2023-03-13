@@ -15,20 +15,18 @@ let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
                    blue("[1]") + " Zum Verwaltungsmenü\n" + 
                    blue("[2]") + " Zum Anwendungsmenü\n" +
                    exit + " Beenden der App\n";
+
+let start =  blue("Willkommen") + " in der Lernapp!\n"+
+             "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
 //////////////
 
-// String def
-// let i = "Enter"
-//////////////
                   
 let ps = new programmState("main",[],[]); //[]dummy
 let ps2 = readData("defaultPS")
 
 // Start of Programm
 console.clear();
-console.log(blue("Willkommen") + " in der Lernapp!");
-console.log("Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm");
-
+console.log(start)
 let input = await prompt(mainString);
 
 // programm loop
@@ -37,12 +35,12 @@ while (input !== "exit") {
     case "1":
       ps.menu = "ver";
       console.clear();
-      handleManagement(ps2);
+      await handleManagement(ps2);
       break;
     case "2":
       ps.menu = "anw";
       console.clear();
-      handleTraining(ps2);
+      await handleTraining(ps2);
       break;
     default:
       console.log(warning("Ungültige Eingabe"));

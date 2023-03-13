@@ -22,19 +22,19 @@ export async function handleManagement(ps){
     console.clear();
     switch(input){
         case "1":
-            addCategory(ps);
+            await addCategory(ps);
             break;
         case "2":
-            editCategory(ps);
+            await editCategory(ps);
             break;
         case "3":
-            deleteCategory(ps);
+            await deleteCategory(ps);
             break;
         case "exit":
             break;
         default:
             console.log(warning("ungültige Eingabe"));
-            handleManagement(ps);
+            await handleManagement(ps);
             break;
     }
 }
@@ -197,8 +197,8 @@ async function editQuestion(array, category){
 // add category
 // adds a new category to the category array
 // (as string)
-function addCategory(ps){
-    let newCategory = prompt("Wie soll die neue Kategorie heißen?\n");
+async function addCategory(ps){
+    let newCategory = await prompt("Wie soll die neue Kategorie heißen?\n");
     ps.categoryArray.push(newCategory);
     console.log("neue Kategorie " + black(newCategory)+" hinzugefügt");
 }
@@ -229,7 +229,7 @@ async function deleteCategory(ps){
 async function editCategory(ps){
     let categoryString = "";
     for(let i = ps.categoryArray.length - 1; i>=0;i--){
-        categoryString = `[${i+1}] ${ps.categoryArray[i]}\n` + categoryString;
+        categoryString = blue(`[${i+1}]`) + `${ps.categoryArray[i]}\n` + categoryString;
     }
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
