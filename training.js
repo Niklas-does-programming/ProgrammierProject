@@ -2,9 +2,14 @@
 // functions for the application mode
 // of the software
 
-import { programmState, question, select, selectQuestion,prompt } from "./utils.js";
-import { blue, warning, exit, yellow,whitebg } from "./design.js";
-
+import {
+  programmState,
+  question,
+  select,
+  selectQuestion,
+  prompt,
+} from "./utils.js";
+import { blue, warning, exit, yellow, whitebg } from "./design.js";
 
 //String Def
 let trainingString =
@@ -92,44 +97,41 @@ async function askQuestion(ps, array) {
         break;
       case "Mult-Frage":
         console.clear();
-        console.log("mult choice in arbeit")
-  //       console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
-  //       console.log(yellow(ask[k].questionText));
-  //       let que = [];
-  //       let answ = [];
-  //       for (let key in ask[k].answerDic) {
-  //         que.push(key);
-  //         answ.push(ask[k].answerDic[key]);
-  //       }
-  //       let quetxt = "";
-  //       for (let i = 0; i < que.length; i++) {
-  //         quetxt = quetxt + que[i] + " ";
-  //       }
-  //       ans = prompt(`${quetxt}\n`);
-  //       let temp = -1;
-  //       for (let j = 0; j < que.length; j++) {
-  //         if (ans === que[j]) {
-  //           temp = j;
-  //         }
-  //       }
-  //       if (temp === -1) {
-  //         ask[k].asked += 1;
-  //         ask[k].wrong += 1;
-  //         console.log("Die Anwort war nicht richtig");
-  //       } else if (answ[temp] === true) {
-  //         ask[k].asked += 1;
-  //         console.log("Die Anwort war richtig");
-  //       } else {
-  //         ask[k].asked += 1;
-  //         ask[k].wrong += 1;
-  //         console.log("Die Anwort war nicht richtig");
-  //       }
-  //       break;
-  //   }
-   }
+        console.log("mult choice in arbeit");
+      //       console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
+      //       console.log(yellow(ask[k].questionText));
+      //       let que = [];
+      //       let answ = [];
+      //       for (let key in ask[k].answerDic) {
+      //         que.push(key);
+      //         answ.push(ask[k].answerDic[key]);
+      //       }
+      //       let quetxt = "";
+      //       for (let i = 0; i < que.length; i++) {
+      //         quetxt = quetxt + que[i] + " ";
+      //       }
+      //       ans = prompt(`${quetxt}\n`);
+      //       let temp = -1;
+      //       for (let j = 0; j < que.length; j++) {
+      //         if (ans === que[j]) {
+      //           temp = j;
+      //         }
+      //       }
+      //       if (temp === -1) {
+      //         ask[k].asked += 1;
+      //         ask[k].wrong += 1;
+      //         console.log("Die Anwort war nicht richtig");
+      //       } else if (answ[temp] === true) {
+      //         ask[k].asked += 1;
+      //         console.log("Die Anwort war richtig");
+      //       } else {
+      //         ask[k].asked += 1;
+      //         ask[k].wrong += 1;
+      //         console.log("Die Anwort war nicht richtig");
+      //       }
+      //       break;
+    }
+  }
 
-  // for (let z = 0; z < ask.length; z++) {
-  //   ps.questionArray.push(ask[z]);
-   }
   // console.clear();
 }
