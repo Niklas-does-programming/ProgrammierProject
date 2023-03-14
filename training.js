@@ -22,22 +22,22 @@ export async function handleTraining(ps) {
   switch (input) {
     case "1":
       console.clear();
-      let cat = chooseCategory(ps.categoryArray);
-      let question = getQuestions(ps, cat);
+      let cat = await chooseCategory(ps.categoryArray);
+      let question = await getQuestions(ps, cat);
       //selectQuestion(numQuestions(question, cat), question, ps);
-      askQuestion(ps, question);
+      await askQuestion(ps, question);
       //console.log(ps);
       break;
     case "2":
       let quest = ps.questionArray;
       //selectQuestion(numQuestions(quest, "Alle"), quest, ps);
-      askQuestion(ps, quest);
+      await askQuestion(ps, quest);
       break;
     case "exit":
       break;
     default:
       console.log("Ungültige Eingabe");
-      handleTraining(ps);
+      await handleTraining(ps);
       break;
   }
   console.clear();
