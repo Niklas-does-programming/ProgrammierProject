@@ -12,9 +12,9 @@ export function readData(keyToFile){
     return data
 }
 
-export function saveData(keyToFile,fileToBeSaved){
+export function saveData(fileToBeSaved){
     const data = JSON.stringify(fileToBeSaved); //parse obj to str in Jsonformat
-    localStorage.setItem(keyToFile, data); //sets JSON File in Localstorage
+    localStorage.setItem("ProgramState", data); //sets JSON File in Localstorage
 }
  
 

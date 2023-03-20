@@ -83,7 +83,9 @@ async function askQuestion(questionArray_) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
-        } else {
+        }
+        if(ans === "exit"){return} 
+        else {
           questionArray[k].asked += 1;
           questionArray[k].wrong += 1;
           stats(questionArray);

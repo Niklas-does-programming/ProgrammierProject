@@ -2,8 +2,8 @@
 // functions for editing the existing database 
 // of questions
 
-import chalk from 'chalk';
 import { exit, blue, green, warning, black, yellow, underline } from './design.js';
+import { saveData } from './readwrite.js';
 import {programmState, question, select, multipleChoice, prompt} from './utils.js';
 
 
@@ -33,7 +33,7 @@ export async function handleManagement(ps){
         case "exit":
             break;
         default:
-            console.log(warning("ungültige Eingabe"));
+            console.log(warning("Ungültige Eingabe"));
             await handleManagement(ps);
             break;
     }
@@ -48,6 +48,7 @@ async function addQuestion(questionArray, category){
     let answerText = await prompt("Wie soll die Antwort lauten?");
     let newQuestion = new question("Frage", questionText, answerText, category, 0, 0, 0);
     questionArray.push(newQuestion);
+    console.clear()
 }
 
 async function addMultiQuestion(questionArray, category){
@@ -58,14 +59,12 @@ async function addMultiQuestion(questionArray, category){
     let truthVal;
     let newAnswerPos;
     answer = await prompt("Geben Sie bitte Ihre erste Antwortmöglichkeit ein:\n")
-    while(!(!(truthVal == "1") || !(truthVal == "2"))){
+    while(!((truthVal == "1") || (truthVal == "2"))){
         truthVal = await prompt("Ist diese Antwortmöglichkeit richtig?\n"+ blue("[1]")+ "Ja\n" + blue("[2]")+ "Nein\n");
         if(truthVal === "1"){
-            console.log("ja")
-            answerDict[newAnswerPos] = true;
+            answerDict[answer] = true;
         }else if (truthVal === "2"){
-            console.log("nein")
-            answerDict[newAnswerPos] = false;
+            answerDict[answer] = false;
         }else{
             console.log(warning("ungültige Eingabe"));
         }
@@ -92,6 +91,7 @@ async function addMultiQuestion(questionArray, category){
     }
     let question = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0, 0);
     questionArray.push(question);
+    console.clear()
 }
 
 // delete question
@@ -111,15 +111,16 @@ async function deleteQuestion(array){
             questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${answers}\n` + questionString;
         }
     }
-    questionString = "Welche Frage möchten Sie löschen?\n" + questionString + "[exit]\n";
+    questionString = "Welche Frage möchten Sie löschen?\n" + questionString + exit;
     let index = parseFloat(await prompt(questionString))-1;
     if (isNaN(index)){
-        console.log(warning("ungültige Eingabe"));
+        console.log(warning("Ungültige Eingabe"));
         return;
     }
     if((0<= index < array.length)){
         array.splice(index, 1);
     }
+    console.clear()
 }
 
 // edit question
@@ -140,8 +141,9 @@ async function editQuestion(questionArray, category){
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
     let index = parseFloat(await prompt(questionString))-1;
-    if (isNaN(index)){
-        console.log(warning("ungültige Eingabe"));
+    if(index === "exit"){return}
+    else if (isNaN(index)){
+        console.log(warning("Ungültige Eingabe"));
         return;
     }
     if (questionArray[index].type === "Frage"){
@@ -149,15 +151,29 @@ async function editQuestion(questionArray, category){
     }else if (questionArray[index].type === "Mult-Frage"){
         await addMultiQuestion(questionArray,category)
     }
+    console.clear()
 }
 
 // add category
 // adds a new category to the category array
 // (as string)
 async function addCategory(ps){
+    let input;
     let newCategory = await prompt("Wie soll die neue Kategorie heißen?\n");
     ps.categoryArray.push(newCategory);
-    console.log("neue Kategorie " + black(newCategory)+" hinzugefügt");
+    console.clear();
+    console.log(underline("Sie haben eine neue Kategorie: " + yellow(newCategory) +" hinzugefügt"));
+    while(!(input == "1") || (input == "2")){
+        input = await prompt("Welche Art von Frage möchten Sie dieser Kategorie hinzugfügen?\n" + blue("[1]") +"Frage\n" + blue("[2]") +"Multiple-Choice-Frage\n" );
+        if(input === "1"){
+            await addQuestion(ps.questionArray,newCategory)
+        }else if (input === "2"){
+            await addMultiQuestion(ps.questionArray,newCategory)
+        }else{
+            console.log(warning("Ungültige Eingabe"));
+        }
+    }
+    console.clear()
 }
 
 // delete category
@@ -170,7 +186,7 @@ async function deleteCategory(ps){
     // TODO categories auflisten und fragen welche gelöscht werden soll
     let categoryString = "";
     for(let i = ps.categoryArray.length - 1; i>=0;i--){
-        categoryString = `[${i+1}] ${ps.categoryArray[i]}\n` + categoryString;
+        categoryString = blue(`[${i+1}]`) + `${ps.categoryArray[i]}\n` + categoryString;
     }
     categoryString = "Welche Kategorie möchten Sie löschen?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
@@ -178,6 +194,7 @@ async function deleteCategory(ps){
     let isCategory = element => element === category;
     let index = ps.categoryArray.findIndex(isCategory);
     ps.categoryArray.splice(index,1);
+    console.clear()
 }
 
 // edit category
@@ -191,7 +208,8 @@ async function editCategory(ps){
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
     let categoryArray = select(ps, category);
-    let input = await prompt(underline("Was möchten Sie mit dieser Kategorie tun?\n") + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n")
+    console.clear();
+    let input = await prompt(underline("Was möchten Sie mit dieser Kategorie tun?\n") + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n");
     switch(input){
         case "1":
             await deleteQuestion(categoryArray);
@@ -215,7 +233,8 @@ async function editCategory(ps){
                 // TODO index der kategorie 
                 categoryArray[i].category = newName;
             }
-            break;          
+            console.clear()
+            break;  
         case "exit":
             break;
         default:

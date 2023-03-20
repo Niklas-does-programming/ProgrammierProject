@@ -12,27 +12,25 @@ import { prompt } from "./utils.js";
 // String def
 let mainString =
   "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
-  blue("[1]") +
-  " Zum Verwaltungsmenü\n" +
-  blue("[2]") +
-  " Zum Anwendungsmenü\n" +
-  exit +
-  " Beenden der App\n";
+    blue("[1]") + " Zum Verwaltungsmenü\n" +
+    blue("[2]") + " Zum Anwendungsmenü\n" +
+    exit + " Beenden der App\n";
 
 let start =  yellow("Willkommen") + " in der Lernapp!\n"+
              "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm" + "\n";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
 //////////////
 
 let ps = new programmState("main", [], []); //[]dummy
-let ps2 = readData("defaultPS");
+let ps2 = readData("ProgramState");
 
 // Start of Programm
 console.clear();
 console.log(start);
-let input = await prompt(mainString);
+let input;
 
 // programm loop
 while (input !== "exit") {
+  input = await prompt(mainString);
   switch (input) {
     case "1":
       ps.menu = "ver";
@@ -48,8 +46,8 @@ while (input !== "exit") {
       console.log(warning("Ungültige Eingabe"));
       break;
   }
-  console.clear();
-  input = await prompt(mainString);
+  
 }
-//console.log(typeof ps2.questionArray);
-//console.log(ps2); /////////////////////////////////////////////
+saveData(ps2)
+console.clear()
+console.log("Daten wurden gespeichert.")
