@@ -1,11 +1,13 @@
 import chalk from "chalk";
-const blue = chalk.blue;
-const red  = chalk.red;
-const exit = red("[exit]")
+const blue = chalk.bgBlue;
+const bgRed  = chalk.bgRed;
+const exit = bgRed("[exit]")
 const warning = chalk.bgRed;
 const green = chalk.green
 const black = chalk.black
 const yellow = chalk.yellow
-const whitebg = chalk.bgWhite
+const underline = chalk.bold
+const wrong = chalk.bgRed
+const right = chalk.bgGreen
 
-export{exit, blue, warning, green, black, yellow,whitebg}
+export{exit, blue, warning, green, black, yellow,underline, wrong, right}

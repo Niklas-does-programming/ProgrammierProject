@@ -4,7 +4,7 @@
 // responsible functions
 import {programmState, question, multipleChoice} from './utils.js';
 import { saveData, readData } from './readwrite.js';
-import {exit, blue, green, warning, black} from './design.js';
+import {exit, blue, green, warning, black, yellow, underline} from './design.js';
 import { handleManagement } from "./management.js";
 import { handleTraining } from "./training.js";
 import { prompt } from './utils.js'
@@ -16,8 +16,8 @@ let mainString = "Sie befinden sich im Hauptmenü, was möchten Sie tun?\n" +
                    blue("[2]") + " Zum Anwendungsmenü\n" +
                    exit + " Beenden der App\n";
 
-let start =  blue("Willkommen") + " in der Lernapp!\n"+
-             "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
+let start =  yellow("Willkommen") + " in der Lernapp!\n"+
+             "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm" + "\n";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
 //////////////
 
                   

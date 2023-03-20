@@ -14,3 +14,15 @@
 // }
 
 
+let test = [1,2,3];
+let test2 = [1,2,3,4];
+
+export function compareMult(promptAnswers,rightAnswers){
+    for(let i= 0;  i<= rightAnswers.length; i++){
+        if(promptAnswers[i] != rightAnswers[i])
+        {
+            return false
+        }
+    }
+    return true
+}

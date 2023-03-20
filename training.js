@@ -2,19 +2,16 @@
 // functions for the application mode
 // of the software
 
-import { programmState, question, select, selectQuestion,prompt } from "./utils.js";
-import { blue, warning, exit, yellow,whitebg } from "./design.js";
+import { programmState, question, select, selectQuestion,prompt, multiPrompt, compareMult, stats } from "./utils.js";
+import { blue, warning, exit, yellow, underline, wrong, right } from "./design.js";
 
 
 //String Def
 let trainingString =
-  "Sie befinden sich im Anwendungsmenü, was möchten Sie tun?\n" +
-  blue("[1]") +
-  " Eine Kategorie für Fragen Auswählen\n" +
-  blue("[2]") +
-  " Fragen aus allen Kategorie\n" +
-  exit +
-  " zurück zum Hauptmenü\n";
+  underline("Sie befinden sich im Anwendungsmenü, was möchten Sie tun?\n") +
+  blue("[1]") + " Eine Kategorie für Fragen Auswählen\n" +
+  blue("[2]") + " Fragen aus allen Kategorie\n" +
+  exit + " zurück zum Hauptmenü\n";
 ////////////////////
 
 export async function handleTraining(ps) {
@@ -22,16 +19,16 @@ export async function handleTraining(ps) {
   switch (input) {
     case "1":
       console.clear();
-      let cat = await chooseCategory(ps.categoryArray);
-      let question = await getQuestions(ps, cat);
+      let category = await chooseCategory(ps.categoryArray);
+      let questionFromSpecificCategory = await getQuestions(ps, category);
       //selectQuestion(numQuestions(question, cat), question, ps);
-      await askQuestion(ps, question);
+      await askQuestion(questionFromSpecificCategory);
       //console.log(ps);
       break;
     case "2":
-      let quest = ps.questionArray;
+      let allCategoryQuest = ps.questionArray;
       //selectQuestion(numQuestions(quest, "Alle"), quest, ps);
-      await askQuestion(ps, quest);
+      await askQuestion(allCategoryQuest);
       break;
     case "exit":
       break;
@@ -70,66 +67,55 @@ async function chooseCategory(array) {
 }
 
 // ask questions
-async function askQuestion(ps, array) {
-  let ask = array;
+async function askQuestion(questionArray_) {
+  let questionArray = questionArray_;
   let type;
-  for (let k = 0; k < ask.length; k++) {
-    type = ask[k].type;
+  let end
+  console.clear()
+  for (let k = 0; k < questionArray.length; k++) {
+    type = questionArray[k].type;
     let ans = "";
     switch (type) {
       case "Frage":
-        console.clear();
-        console.log(whitebg("Frage:"));
-        ans = await prompt(yellow(`${ask[k].questionText}\n`));
-        if (ans === ask[k].answerText) {
-          ask[k].asked += 1;
-          console.log("Die Anwort war richtig");
+        console.log(underline("Frage:"));
+        ans = await prompt(`${questionArray[k].questionText}\n`);
+        if (ans === questionArray[k].answerText) {
+          questionArray[k].asked += 1;
+          stats(questionArray);
+          console.log(right("Die Anwort war richtig"));
         } else {
-          ask[k].asked += 1;
-          ask[k].wrong += 1;
-          console.log("Die Anwort war nicht richtig");
+          questionArray[k].asked += 1;
+          questionArray[k].wrong += 1;
+          stats(questionArray);
+          console.log(wrong("Die Anwort war nicht richtig"));
+          console.log("Die richtige Anwort wäre: " + questionArray[k].answerText);
         }
+        console.log() 
         break;
       case "Mult-Frage":
-        console.clear();
-        console.log("mult choice in arbeit")
-  //       console.log(whitebg("Dies ist eine Multiple-Choice Frage:"));
-  //       console.log(yellow(ask[k].questionText));
-  //       let que = [];
-  //       let answ = [];
-  //       for (let key in ask[k].answerDic) {
-  //         que.push(key);
-  //         answ.push(ask[k].answerDic[key]);
-  //       }
-  //       let quetxt = "";
-  //       for (let i = 0; i < que.length; i++) {
-  //         quetxt = quetxt + que[i] + " ";
-  //       }
-  //       ans = prompt(`${quetxt}\n`);
-  //       let temp = -1;
-  //       for (let j = 0; j < que.length; j++) {
-  //         if (ans === que[j]) {
-  //           temp = j;
-  //         }
-  //       }
-  //       if (temp === -1) {
-  //         ask[k].asked += 1;
-  //         ask[k].wrong += 1;
-  //         console.log("Die Anwort war nicht richtig");
-  //       } else if (answ[temp] === true) {
-  //         ask[k].asked += 1;
-  //         console.log("Die Anwort war richtig");
-  //       } else {
-  //         ask[k].asked += 1;
-  //         ask[k].wrong += 1;
-  //         console.log("Die Anwort war nicht richtig");
-  //       }
-  //       break;
-  //   }
-   }
-
-  // for (let z = 0; z < ask.length; z++) {
-  //   ps.questionArray.push(ask[z]);
-   }
-  // console.clear();
+        let choicesList = []
+        let promptAnswers = []
+        let rightAnswers = []
+        for (const [key, val] of Object.entries(questionArray[k].answerDic)) {
+          let dict = {name: key, value: val };
+          choicesList.push(dict);
+          if(val){rightAnswers.push(key)}
+        }
+        console.log(underline("Multiple-Choice Frage:"));
+        promptAnswers = await multiPrompt(choicesList,questionArray[k].questionText)
+        if (compareMult(promptAnswers,rightAnswers)== true) {
+          questionArray[k].asked += 1;
+          stats(questionArray);
+          console.log(right("Die Anwort war richtig"));
+        } else {
+          questionArray[k].asked += 1;
+          questionArray[k].wrong += 1;
+          stats(questionArray);
+          console.log(wrong("Die Anwort war nicht richtig"));
+          console.log("Die richtigen Anworten wären: " + rightAnswers);
+        }
+        console.log()    
+      }
+    }
+    end = await prompt("Sie haben alle Fragen dieser Kategorie beantwortet!\n" + " Durch drücken einer Taste landen Sie im Hauptmenü");
 }

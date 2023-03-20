@@ -3,12 +3,12 @@
 // of questions
 
 import chalk from 'chalk';
-import { exit, blue, green, warning, black } from './design.js';
+import { exit, blue, green, warning, black, yellow, underline } from './design.js';
 import {programmState, question, select, multipleChoice, prompt} from './utils.js';
 
 
 // String definitions
-let managementString = "Sie befinden sich im Verwaltungsmenü, was möchten Sie tun?\n" + 
+let managementString = underline("Sie befinden sich im Verwaltungsmenü, was möchten Sie tun?\n") + 
                    blue("[1]") + " Eine neue Kategorie hinzufügen\n" + 
                    blue("[2]") + " Eine vorhandene Kategorie bearbeiten (Namen/Fragen)\n" +
                    blue("[3]") + " Eine vorhandene Kategorie löschen\n" +
@@ -43,45 +43,46 @@ export async function handleManagement(ps){
 // takes a temporary array and the category, 
 // this question will be added to and adds 
 // the question to the array of existing questions
-async function addQuestion(tmp, category){
+async function addQuestion(questionArray, category){
     let questionText = await prompt("Wie soll die Frage lauten?");
     let answerText = await prompt("Wie soll die Antwort lauten?");
-    let answer;
-    let finished = false;
-    while(!finished){
-        answer = await prompt("Ist das so okay?\nFrage:" + black(questionText) + " \nAntwort:" + green(answerText) + "\n" + blue("[Ja][Nein]") + exit + "\n")
-        if(answer === "Ja"){
-            let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
-            tmp.push(newQuestion);
-            finished = true;
-        }else if(answer === "Nein"){
-            addQuestion(tmp, category);
-            finished = true;
-        }else if(answer === "exit"){
-            return;
-        }else{
-            console.log(warning("ungültige Eingabe"));        }
-    }
+    let newQuestion = new question("Frage", questionText, answerText, category, 0, 0, 0);
+    questionArray.push(newQuestion);
 }
 
-async function addMultiQuestion(tmp, category){
+async function addMultiQuestion(questionArray, category){
     let questionText = await prompt("Wie soll die Frage lauten?\n");
     let answer;
     let answerDict = {};
     let finished = false;
+    let truthVal;
+    let newAnswerPos;
+    answer = await prompt("Geben Sie bitte Ihre erste Antwortmöglichkeit ein:\n")
+    while(!(!(truthVal == "1") || !(truthVal == "2"))){
+        truthVal = await prompt("Ist diese Antwortmöglichkeit richtig?\n"+ blue("[1]")+ "Ja\n" + blue("[2]")+ "Nein\n");
+        if(truthVal === "1"){
+            console.log("ja")
+            answerDict[newAnswerPos] = true;
+        }else if (truthVal === "2"){
+            console.log("nein")
+            answerDict[newAnswerPos] = false;
+        }else{
+            console.log(warning("ungültige Eingabe"));
+        }
+    }
     while (!finished){
-        answer = await prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?"+ blue("[Ja][Nein]") + exit + "\n")
-        if(answer === "Ja"){
-            let newAnswerPos = await prompt("Wie soll diese lauten?\n");
-            let truthVal = await prompt("Ist diese Antwort richtig?"+ blue("[Ja][Nein]")+ "\n");
-            if(truthVal === "Ja"){
+        answer = await prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?\n"+ blue("[1]")+ "Ja\n" + blue("[2]")+ "Nein\n")
+        if(answer === "1"){
+            newAnswerPos = await prompt("Wie soll diese lauten?\n");
+            truthVal = await prompt("Ist diese Antwortmöglichkeit richtig?\n"+ blue("[1]")+ "Ja\n" + blue("[2]")+ "Nein\n");
+            if(truthVal === "1"){
                 answerDict[newAnswerPos] = true;
-            }else if (truthVal === "Nein"){
+            }else if (truthVal === "2"){
                 answerDict[newAnswerPos] = false;
             }else{
                 console.log(warning("ungültige Eingabe"));
             }
-        }else if (answer === "Nein"){
+        }else if (answer === "2"){
             finished = true;
         }else if (answer === "exit"){
             return;
@@ -89,8 +90,8 @@ async function addMultiQuestion(tmp, category){
             console.log(warning("ungültige Eingabe"));
         }
     }
-    let question = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0);
-    tmp.push(question);
+    let question = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0, 0);
+    questionArray.push(question);
 }
 
 // delete question
@@ -124,75 +125,31 @@ async function deleteQuestion(array){
 // edit question
 // takes an array, an index at which to change
 // the question and the edited question
-async function editQuestion(array, category){
+async function editQuestion(questionArray, category){
     let questionString = "";
-    for(let i = array.length - 1; i>=0;i--){
-        if (array[i].type === "Frage"){
-            questionString = blue(`[${i+1}]`) + ` ${array[i].questionText}, ${array[i].answerText}\n` + questionString;
-        }else if(array[i].type === "Mult-Frage"){
+    for(let i = questionArray.length - 1; i>=0;i--){
+        if (questionArray[i].type === "Frage"){
+            questionString = blue(`[${i+1}]`) + ` ${questionArray[i].questionText}, ${questionArray[i].answerText}\n` + questionString;
+        }else if(questionArray[i].type === "Mult-Frage"){
             let answers = "";
-            for (let key in array[i].answerDic){
-                answers = key + ":" + array[i].answerDic[key] + ", " + answers;
+            for (let key in questionArray[i].answerDic){
+                answers = key + ":" + questionArray[i].answerDic[key] + ", " + answers;
             }
-            questionString = blue(`[${i+1}]`) + `${array[i].questionText}, ${answers}\n` + questionString;
+            questionString = blue(`[${i+1}]`) + `${questionArray[i].questionText}, ${answers}\n` + questionString;
         }
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
-    let index = parseFloat(prompt(questionString))-1;
+    let index = parseFloat(await prompt(questionString))-1;
     if (isNaN(index)){
         console.log(warning("ungültige Eingabe"));
         return;
     }
-    let questionText = await prompt("Wie soll die Frage lauten?\n");
-    if (array[index].type === "Frage"){
-        let answerText = await prompt("Wie soll die Antwort lauten?\n");
-        let answer;
-        let finished = false;
-        while(!finished){
-            answer = await prompt("Ist das so okay?\n Frage:" + black(questionText) + " \nAntwort:" + green(answerText) + blue("[Ja][Nein]") + exit + "\n");
-            if(answer === "Ja"){
-                let newQuestion = new question("Frage", questionText, answerText, category, 0, 0);
-                array[index] = newQuestion;
-                finished = true;
-            }else if(answer === "Nein"){
-                editQuestion(array, category);
-                finished = true;
-            }else if(answer === "exit"){
-                return;
-            }else{
-                console.log(warning("ungültige Eingabe"));
-            }
-        }
-    }else if (array[index].type === "Mult-Frage"){
-        let answerDict = {};
-        let answer;
-        let finished = false;
-        while(!finished){
-            answer = await prompt("Möchten Sie eine weitere Antwortmöglichkeit hinzufügen?"+ blue("[Ja][Nein]") + exit + "\n");
-            if(answer === "Ja"){
-                let newAnswerPos = await prompt("Wie soll diese lauten?\n");
-                let truthVal = await prompt("Ist diese Antwort richtig?" + blue("[Ja][Nein]\n"));
-                if(truthVal === "Ja"){
-                    answerDict[newAnswerPos] = true;
-                }else if (truthVal === "Nein"){
-                    answerDict[newAnswerPos] = false;
-                }else{
-                    console.log(warning("ungültige Eingabe"));
-                }
-            }else if (answer === "Nein"){
-                finished = true;
-                let newMultQuestion = new multipleChoice("Mult-Frage", questionText, answerDict, category, 0, 0);
-                array[index] = newMultQuestion;
-            }else if (answer === "exit"){
-                return;
-            }else{
-                console.log(warning("ungültige Eingabe"));
-            }
-        }
+    if (questionArray[index].type === "Frage"){
+        await addQuestion(questionArray,category)
+    }else if (questionArray[index].type === "Mult-Frage"){
+        await addMultiQuestion(questionArray,category)
     }
 }
-
-
 
 // add category
 // adds a new category to the category array
@@ -233,20 +190,20 @@ async function editCategory(ps){
     }
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
     let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
-    let tmp = select(ps, category);
-let input = await prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n")
+    let categoryArray = select(ps, category);
+    let input = await prompt(underline("Was möchten Sie mit dieser Kategorie tun?\n") + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n")
     switch(input){
         case "1":
-            deleteQuestion(tmp);
+            await deleteQuestion(categoryArray);
             break;
         case "2":
-            editQuestion(tmp, category);
+            await editQuestion(categoryArray, category);
             break;
         case "3":
-            addQuestion(tmp, category);
+            await addQuestion(categoryArray, category);
             break;
         case "4":
-            addMultiQuestion(tmp, category);
+            await addMultiQuestion(categoryArray, category);
             break;
         case "5":
             let newName = await prompt("Wie soll der neue Name lauten?\n");
@@ -254,19 +211,19 @@ let input = await prompt("Was möchten Sie mit dieser Kategorie tun?\n" + blue("
             let index = ps.categoryArray.findIndex(isCategory);
             ps.categoryArray[index] = newName;
             
-            for(let i = 0; i < tmp.length; i++){
+            for(let i = 0; i < categoryArray.length; i++){
                 // TODO index der kategorie 
-                tmp[i].category = newName;
+                categoryArray[i].category = newName;
             }
             break;          
         case "exit":
             break;
         default:
-            console.log(warning("ungültiger Input"));
+            console.log(warning("Ungültiger Input"));
             break;
     }
-    for(let i = tmp.length-1; i >= 0; i--){
-        ps.questionArray.push(tmp[i]);
+    for(let i = categoryArray.length-1; i >= 0; i--){
+        ps.questionArray.push(categoryArray[i]);
     }
 
 }
