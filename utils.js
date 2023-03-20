@@ -98,7 +98,7 @@ export function selectQuestion(questionArray, amountOfQuestions) {
 //   return temp;
 // }
 
-import pkg from 'enquirer';
+import pkg from "enquirer";
 const { Input } = pkg;
 import { underline, yellow } from './design.js';
 
