@@ -20,8 +20,8 @@ let start =  yellow("Willkommen") + " in der Lernapp!\n"+
              "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm" + "\n";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
 //////////////
 
-let ps = new programmState("main", [], []); //[]dummy
-let ps2 = readData("ProgramState");
+// let ps = new programmState("main", [], []); //[]dummy
+let ps = readData("ProgramState");
 
 // Start of Programm
 console.clear();
@@ -35,12 +35,12 @@ while (input !== "exit") {
     case "1":
       ps.menu = "ver";
       console.clear();
-      await handleManagement(ps2);
+      await handleManagement(ps);
       break;
     case "2":
       ps.menu = "anw";
       console.clear();
-      await handleTraining(ps2);
+      await handleTraining(ps);
       break;
     default:
       console.log(warning("Ungültige Eingabe"));

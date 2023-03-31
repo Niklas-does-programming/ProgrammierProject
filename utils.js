@@ -1,5 +1,9 @@
 // utilitiy functions
 // neccessary functions and classes
+import { underline, yellow } from './design.js';
+import pkg from "enquirer";
+const { Input } = pkg;
+const { MultiSelect } = pkg;
 
 export class question {
   constructor(type, questionText, answerText, category, asked, wrong, questionValue) {
@@ -70,42 +74,38 @@ export function select(ps, criteria) {
   }
   return tmp;
 }
-
-export function selectQuestion(questionArray, amountOfQuestions) {
+//select amount of questions sorted by questionvalue (often wrong answered questions first)
+export function selectQuestion(questionArray, amountOfQuestions) { 
   let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionText)
   assortedArray = assortedArray.slice(0, amountOfQuestions);
   return assortedArray
 }
 
-import pkg from "enquirer";
-const { Input } = pkg;
-import { underline, yellow } from './design.js';
-
-export async function prompt(m) {
+//prompt function
+export async function prompt(questionText) { 
   const prompt = new Input({
-  message: underline(m),
+  message: underline(questionText), //question = questiontext
   initial: 'Enter',
   });
   return await prompt.run();
 }
 
-
-const { MultiSelect } = pkg;
-
+//prompt mulitple-choice-prompt function
 export async function multiPrompt(choicesList,questionText){
 const multiprompt = new MultiSelect({
   name: 'value',
-  message: questionText,
-  choices: choicesList,
+  message: questionText, //question = questiontext
+  choices: choicesList, //possible answers = choicesList
   });
   return await multiprompt.run();
 }
 
-export function compareMult(promptAnswers,rightAnswers){
+ //checks Multiple Choice Answers
+export function compareMult(promptAnswers,rightAnswers){ 
   for(let i= 0;  i<= rightAnswers.length; i++){
-    if(promptAnswers[i] != rightAnswers[i])
+    if(promptAnswers[i] != rightAnswers[i]) //if promptanswer value is not equal the rightanswer value -> return false
     {
-      return false
+      return false 
     }
   }
   return true
