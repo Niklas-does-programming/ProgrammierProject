@@ -36,8 +36,8 @@ export class programmState {
 // statistics
 export function stats(questionArray) {
   for (let i = 0; i < questionArray.length; i++) {
-    let ask = questionArray[i].asked;
-    let wrg = questionArray[i].wrong;
+    let ask = questionArray[i].asked; //get how often the question was asked
+    let wrg = questionArray[i].wrong; //get how often the question was answered wrong
     if (wrg === 0) {
       questionArray[i].questionValue = ask;
       //statArray[i][1] = ask;
@@ -48,7 +48,7 @@ export function stats(questionArray) {
   }
 }
 
-// sort questions
+// randomizes questions array
 export function randomizeQuestions(questionArray) {
   let sortArray;
   for (let i = questionArray.length; i > 0; i++) {

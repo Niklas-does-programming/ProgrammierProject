@@ -7,14 +7,14 @@ import { LocalStorage } from 'node-localstorage';
 const localStorage = new LocalStorage('./database'); //creates new Localstorage
 
 export function readData(keyToFile){
-    let file = localStorage.getItem(keyToFile); //sets JSON File in Localstorage
-    const data = JSON.parse(file); 
+    let file = localStorage.getItem(keyToFile); //get JSON File from Localstorage
+    const data = JSON.parse(file); // parse to usable data
     return data
 }
 
 export function saveData(fileToBeSaved){
     const data = JSON.stringify(fileToBeSaved); //parse obj to str in Jsonformat
-    localStorage.setItem("ProgramState", data); //sets JSON File in Localstorage
+    localStorage.setItem("ProgramState", data); //set JSON File in Localstorage
 }
  
 

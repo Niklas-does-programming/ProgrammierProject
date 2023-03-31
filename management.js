@@ -244,5 +244,4 @@ async function editCategory(ps){
     for(let i = categoryArray.length-1; i >= 0; i--){
         ps.questionArray.push(categoryArray[i]);
     }
-
 }
