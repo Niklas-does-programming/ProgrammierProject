@@ -14,15 +14,18 @@ let trainingString =
   exit + " zurück zum Hauptmenü\n";
 ////////////////////
 
+// main traunung function
 export async function handleTraining(ps) {
   let input = await prompt(trainingString);
   switch (input) {
+    // Question from specific category
     case "1":
       console.clear();
       let category = await chooseCategory(ps.categoryArray);
       let questionFromSpecificCategory = await getQuestions(ps, category);
       await askQuestion(selectQuestion(questionFromSpecificCategory, await numQuestions(questionFromSpecificCategory, category)));
       break;
+    // Question from all categorys
     case "2":
       let allCategoryQuest = ps.questionArray;
       
@@ -70,10 +73,12 @@ async function askQuestion(questionArray_) {
   let type;
   let end
   console.clear()
+  // asking all Questions
   for (let k = 0; k < questionArray.length; k++) {
     type = questionArray[k].type;
     let ans = "";
     switch (type) {
+      // normal Question
       case "Frage":
         console.log(underline("Frage:"));
         ans = await prompt(`${questionArray[k].questionText}\n`);
@@ -92,6 +97,7 @@ async function askQuestion(questionArray_) {
         }
         console.log() 
         break;
+      // multiple choice questions
       case "Mult-Frage":
         let choicesList = []
         let promptAnswers = []
