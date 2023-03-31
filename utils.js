@@ -73,30 +73,9 @@ export function select(ps, criteria) {
 
 export function selectQuestion(questionArray, amountOfQuestions) {
   let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionText)
-  assortedArray = assortedArray.slice(0, amountOfQuestions-1);
+  assortedArray = assortedArray.slice(0, amountOfQuestions);
   return assortedArray
 }
-
-//choose Question
-//Funktioniert Aktuell nicht!!!
-// export function selectQuestion(number, array, ps) {
-//   let temp = [];
-//   let arr = array;
-//   let statarr = stats(array);
-//   statarr = statarr.splice(0, number);
-//   for (let i = 0; i < arr.length; i++) {
-//     for (let j = 0; j < statarr.length; j++) {
-//       if (arr[i].questionText === statarr[j][0]) {
-//         temp.push(array[i]);
-//         arr.splice(i, 1);
-//       }
-//     }
-//   }
-//   for (let z = 0; z < arr.length; z++) {
-//     ps.questionArray.push(arr[z]);
-//   }
-//   return temp;
-// }
 
 import pkg from "enquirer";
 const { Input } = pkg;

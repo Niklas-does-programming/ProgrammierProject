@@ -21,14 +21,12 @@ export async function handleTraining(ps) {
       console.clear();
       let category = await chooseCategory(ps.categoryArray);
       let questionFromSpecificCategory = await getQuestions(ps, category);
-      //selectQuestion(numQuestions(question, cat), question, ps);
-      await askQuestion(questionFromSpecificCategory);
-      //console.log(ps);
+      await askQuestion(selectQuestion(questionFromSpecificCategory, await numQuestions(questionFromSpecificCategory, category)));
       break;
     case "2":
       let allCategoryQuest = ps.questionArray;
-      //selectQuestion(numQuestions(quest, "Alle"), quest, ps);
-      await askQuestion(allCategoryQuest);
+      
+      await askQuestion(selectQuestion(allCategoryQuest, await numQuestions(allCategoryQuest, "aller Fragen")));
       break;
     case "exit":
       break;
@@ -104,6 +102,7 @@ async function askQuestion(questionArray_) {
           if(val){rightAnswers.push(key)}
         }
         console.log(underline("Multiple-Choice Frage:"));
+        console.log(yellow("Auswahl mit Pfeiltasten und Leertaste, Eingabe mit Enter"));
         promptAnswers = await multiPrompt(choicesList,questionArray[k].questionText)
         if (compareMult(promptAnswers,rightAnswers)== true) {
           questionArray[k].asked += 1;
