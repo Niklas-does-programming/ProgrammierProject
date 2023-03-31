@@ -79,12 +79,12 @@ async function askQuestion(questionArray_) {
       case "Frage":
         console.log(underline("Frage:"));
         ans = await prompt(`${questionArray[k].questionText}\n`);
+        if(ans === "exit"){return} ;
         if (ans === questionArray[k].answerText) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
         }
-        if(ans === "exit"){return} 
         else {
           questionArray[k].asked += 1;
           questionArray[k].wrong += 1;
@@ -109,14 +109,16 @@ async function askQuestion(questionArray_) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
-        } else {
+        } 
+        else {
           questionArray[k].asked += 1;
           questionArray[k].wrong += 1;
           stats(questionArray);
           console.log(wrong("Die Anwort war nicht richtig"));
           console.log("Die richtigen Anworten wären: " + rightAnswers);
         }
-        console.log()    
+        console.log();
+        break    
       }
     }
     end = await prompt("Sie haben alle Fragen dieser Kategorie beantwortet!\n" + " Durch drücken einer Taste landen Sie im Hauptmenü");
