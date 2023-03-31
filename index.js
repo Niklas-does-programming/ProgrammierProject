@@ -48,6 +48,6 @@ while (input !== "exit") {
   }
   
 }
-saveData(ps2)
+saveData(ps)
 console.clear()
 console.log("Daten wurden gespeichert.")

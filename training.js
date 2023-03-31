@@ -2,7 +2,7 @@
 // functions for the application mode
 // of the software
 
-import { programmState, question, select, selectQuestion,prompt, multiPrompt, compareMult, stats } from "./utils.js";
+import { programmState, question, select, selectQuestion,prompt, multiPrompt, compareMult, stats,selectRandomQuestion } from "./utils.js";
 import { blue, warning, exit, yellow, underline, wrong, right } from "./design.js";
 
 
@@ -23,7 +23,13 @@ export async function handleTraining(ps) {
       console.clear();
       let category = await chooseCategory(ps.categoryArray);
       let questionFromSpecificCategory = await getQuestions(ps, category);
-      await askQuestion(selectQuestion(questionFromSpecificCategory, await numQuestions(questionFromSpecificCategory, category)));
+      let randomized = await randomize();
+      if(randomized){
+        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,numQuestions(questionFromSpecificCategory,category)));
+      }
+      else{
+        await askQuestion(selectQuestion(questionFromSpecificCategory,numQuestions(questionFromSpecificCategory,category)));
+      }
       break;
     // Question from all categorys
     case "2":
@@ -45,6 +51,21 @@ export async function handleTraining(ps) {
 function getQuestions(ps, category) {
   let temp = select(ps, category);
   return temp;
+}
+
+async function randomize(){
+  while(true){
+    let randomized = await prompt("Sollen die Fragen in einer Zufälligen Reihenfolge gefragt werden?\n" + 
+      blue("[1]") + "Ja\n" + 
+      blue("[2]") + "Nein\n");
+    if(randomized.trimStart().trimEnd() === "1"){
+      return true;
+    }
+    else if(randomized.trimStart().trimEnd() === "2"){
+      return false;
+    }
+    console.log(warning("Ungültige Eingabe"));
+  }
 }
 
 // number of questions to be asked
@@ -126,5 +147,6 @@ async function askQuestion(questionArray_) {
         break    
       }
     }
+    
     end = await prompt("Sie haben alle Fragen dieser Kategorie beantwortet!\n" + " Durch drücken einer Taste landen Sie im Hauptmenü");
 }

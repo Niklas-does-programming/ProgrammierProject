@@ -76,7 +76,14 @@ export function select(ps, criteria) {
 }
 //select amount of questions sorted by questionvalue (often wrong answered questions first)
 export function selectQuestion(questionArray, amountOfQuestions) { 
-  let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionText)
+  let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionText);
+  assortedArray = assortedArray.slice(0, amountOfQuestions);
+  return assortedArray
+}
+
+//elect amount of questions sorted randomly
+export function selectRandomQuestion(questionArray, amountOfQuestions) { 
+  let assortedArray = randomizeQuestions(questionArray);
   assortedArray = assortedArray.slice(0, amountOfQuestions);
   return assortedArray
 }
