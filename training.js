@@ -78,7 +78,7 @@ async function askQuestion(questionArray_) {
         console.log(underline("Frage:"));
         ans = await prompt(`${questionArray[k].questionText}\n`);
         if(ans === "exit"){return} ;
-        if (ans === questionArray[k].answerText) {
+        if (ans.trimStart().trimEnd() === questionArray[k].answerText) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
