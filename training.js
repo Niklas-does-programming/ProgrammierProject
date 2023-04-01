@@ -60,6 +60,7 @@ function getQuestions(ps, category) {
   return temp;
 }
 
+//ask if the questions should be in random order
 async function randomize(){
   while(true){
     let randomized = await prompt("Sollen die Fragen in einer Zufälligen Reihenfolge gefragt werden?\n" + 
@@ -78,13 +79,13 @@ async function randomize(){
 // number of questions to be asked
 async function numQuestions(array, category) {
   let num = await prompt(
-    `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
+    `Welche Anzahl an Fragen aus dem Bereich ${category} wollen Sie gefragt werden? (${array.length} sind maximal möglich): \n`
   );
-  //exeption handler
+  //exception handler
   while(parseInt(num)> array.length || parseInt(num) <= 0 || isNaN(parseInt(num))){ 
     console.log(warning("Ungültige Eingabe"))
     num = await prompt(
-      `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`//////////////////////////////////////////////////////
+      `Welche Anzahl an Fragen aus dem Bereich ${category} wollen Sie gefragt werden? (${array.length} sind maximal möglich): \n`
     );
   }
   console.clear();
@@ -97,7 +98,7 @@ async function chooseCategory(array) {
   for (let i = 0; i < array.length; i++) {
     categoryString = categoryString + blue(`[${i + 1}]`) + `${array[i]}\n`;
   }
-  categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString;
+  categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString + exit + "\n";
   let index = parseFloat(await prompt(categoryString)) - 1;
   //exeption handler
   while(parseInt(index)> array.length || parseInt(index) < 0 || isNaN(parseInt(index))){ 
@@ -123,11 +124,13 @@ async function askQuestion(questionArray_) {
         console.log(underline("Frage:"));
         ans = await prompt(`${questionArray[k].questionText}\n`);
         if(ans === "exit"){return} ;
+        //answered right
         if (ans.trimStart().trimEnd() === questionArray[k].answerText) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
         }
+        //answered wrong
         else {
           questionArray[k].asked += 1;
           questionArray[k].wrong += 1;
@@ -139,9 +142,9 @@ async function askQuestion(questionArray_) {
         break;
       // multiple choice questions
       case "Mult-Frage":
-        let choicesList = []
-        let promptAnswers = []
-        let rightAnswers = []
+        let choicesList = [];
+        let promptAnswers = [];
+        let rightAnswers = [];
         for (const [key, val] of Object.entries(questionArray[k].answerDic)) {
           let dict = {name: key, value: val };
           choicesList.push(dict);
@@ -149,12 +152,14 @@ async function askQuestion(questionArray_) {
         }
         console.log(underline("Multiple-Choice Frage:"));
         console.log(yellow("Auswahl mit Pfeiltasten und Leertaste, Eingabe mit Enter"));
-        promptAnswers = await multiPrompt(choicesList,questionArray[k].questionText)
+        promptAnswers = await multiPrompt(choicesList,questionArray[k].questionText);
+        //answered right
         if (compareMult(promptAnswers,rightAnswers)== true) {
           questionArray[k].asked += 1;
           stats(questionArray);
           console.log(right("Die Anwort war richtig"));
         } 
+        //answered wrong
         else {
           questionArray[k].asked += 1;
           questionArray[k].wrong += 1;

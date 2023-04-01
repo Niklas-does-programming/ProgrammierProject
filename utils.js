@@ -50,18 +50,6 @@ export function stats(questionArray) {
   }
 }
 
-// randomizes questions array
-export function randomizeQuestions(questionArray) {
-  let sortArray = [];
-  for (let i = questionArray.length; i > 0; i--) {
-    let rand = Math.floor(Math.random() * questionArray.length);
-    sortArray.push(questionArray[rand]);
-    questionArray.splice(rand, 1);
-  }
-  questionArray = sortArray
-  return questionArray;
-}
-
 //select questions by criteria (category)
 export function select(ps, criteria) {
   let tmp = [];
@@ -84,14 +72,9 @@ export function selectQuestion(questionArray, amountOfQuestions) {
 
 //select amount of questions sorted randomly
 export function selectRandomQuestion(newQuestionArray, amountOfQuestions, ps) { 
-  let assortedArray = randomizeQuestions(newQuestionArray);
-  newQuestionArray = assortedArray;
-  assortedArray = assortedArray.slice(0, amountOfQuestions);
-  for(let i = amountOfQuestions; i <= newQuestionArray.length-1; i++){
-    ps.questionArray.push(newQuestionArray[i]);
-  }
-  newQuestionArray = assortedArray;
-  return newQuestionArray;
+  let sortArray = newQuestionArray.sort(() => Math.random()-0.5);
+  sortArray = sortArray.slice(0, amountOfQuestions);
+  return sortArray;
 }
 
 //prompt function

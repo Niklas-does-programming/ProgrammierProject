@@ -17,3 +17,8 @@ MUST-HAVES:
         *Die Fragen werden einzeln und nacheinander angezeigt und eine Antwort kann angegeben werden.
         *Es wird gezeigt, ob die Antwort richtig oder falsch war. Bei falscher Antwort wird die richtige angezeigt (zum Lernen).
         *Fragen/Antworten mit Lückentext oder echtes Multiple Choice (d.h. mögliche Mehrfachauswahl verschiedener vorgebener Antworten).
+
+umgesetzte NICE-TO-HAVES:
+    -"enquierer" um Eingaben dynamisch zu korrigieren, Multiple-Choice-Fragen intuitiver und leichter zu machen und Umlaute eingebbar
+    -"chalk" zu besserer Übersichtlichkeit
+    -es ist möglich fragen sortiert in zufälliger Reihenfolge abzufragen wenn nicht werden sie in einer Reihenfolge sortiert, die sich danach richtet wie oft die Frage falsch beantwortet wurde im Vergleich dazu wie oft diese insgesamt gefragt wurden -> optimierte Lernreihenfolge
