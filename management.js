@@ -112,7 +112,8 @@ async function deleteQuestion(array){
         }
     }
     questionString = "Welche Frage möchten Sie löschen?\n" + questionString + exit;
-    let index = parseFloat(await prompt(questionString))-1;
+    let returnString = await prompt(questionString);
+    let index = parseFloat(returnString)-1;
     if (isNaN(index)){
         console.log(warning("Ungültige Eingabe"));
         return;
@@ -140,16 +141,21 @@ async function editQuestion(questionArray, category){
         }
     }
     questionString = "Welche Frage möchten Sie bearbeiten?\n" + questionString;
-    let index = parseFloat(await prompt(questionString))-1;
-    if(index === "exit"){return}
-    else if (isNaN(index)){
-        console.log(warning("Ungültige Eingabe"));
+    let returnString = await prompt(questionString);
+    let index = parseFloat(returnString)-1;
+    if(returnString == "exit"){
+        console.clear();
         return;
-    }
-    if (questionArray[index].type === "Frage"){
+    } else if(index===undefined || index + 1 > questionArray.length){//schauen ob ungültige Eingabe
+        console.log(warning("Bitte einen gültigen Index eingeben"));
+        await editQuestion(questionArray, category);
+    } else if(questionArray[index].type === "Frage"){
         await addQuestion(questionArray,category)
-    }else if (questionArray[index].type === "Mult-Frage"){
+    } else if (questionArray[index].type === "Mult-Frage"){
         await addMultiQuestion(questionArray,category)
+    } else{
+        console.log(warning("Bitte einen gültigen Kategorieindex eingeben"));
+        await editQuestion(questionArray, category);
     }
     console.clear()
 }
@@ -158,22 +164,21 @@ async function editQuestion(questionArray, category){
 // adds a new category to the category array
 // (as string)
 async function addCategory(ps){
-    let input;
     let newCategory = await prompt("Wie soll die neue Kategorie heißen?\n");
-    ps.categoryArray.push(newCategory);
-    console.clear();
-    console.log(underline("Sie haben eine neue Kategorie: " + yellow(newCategory) +" hinzugefügt"));
-    while(!(input == "1") || (input == "2")){
-        input = await prompt("Welche Art von Frage möchten Sie dieser Kategorie hinzugfügen?\n" + blue("[1]") +"Frage\n" + blue("[2]") +"Multiple-Choice-Frage\n" );
-        if(input === "1"){
-            await addQuestion(ps.questionArray,newCategory)
-        }else if (input === "2"){
-            await addMultiQuestion(ps.questionArray,newCategory)
-        }else{
-            console.log(warning("Ungültige Eingabe"));
-        }
+    if(ps.categoryArray.includes(newCategory)){
+        console.log(warning("Diese Kategorie existiert schon!"));
+        await addCategory(ps);
+    } else if(newCategory.trimStart().trimEnd() == "" || newCategory == "Enter"){
+        console.log(warning("Bitte etwas eingeben"));
+        await addCategory(ps);
+    } else if(newCategory.toLowerCase() == "exit"){
+        console.clear();
+        return;
+    }else{
+        ps.categoryArray.push(newCategory);
+        console.clear();
+        console.log(underline("Sie haben eine neue Kategorie: " + yellow(newCategory) +" hinzugefügt"));
     }
-    console.clear()
 }
 
 // delete category
@@ -189,12 +194,24 @@ async function deleteCategory(ps){
         categoryString = blue(`[${i+1}]`) + `${ps.categoryArray[i]}\n` + categoryString;
     }
     categoryString = "Welche Kategorie möchten Sie löschen?\n" + categoryString;
-    let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
-    select(ps, category);
-    let isCategory = element => element === category;
-    let index = ps.categoryArray.findIndex(isCategory);
-    ps.categoryArray.splice(index,1);
-    console.clear()
+    let returnString = await prompt(categoryString);
+    let category = ps.categoryArray[parseFloat(returnString)-1];
+    if(ps.categoryArray.includes(category)){
+        select(ps, category);
+        let isCategory = element => element === category;
+        let index = ps.categoryArray.findIndex(isCategory);
+        ps.categoryArray.splice(index,1);
+        console.clear()
+    } else if(returnString == "exit"){
+        console.clear();
+        return;
+    } else if(category===undefined){//schauen ob ungültige Eingabe
+        console.log(warning("Bitte einen gültigen Kategorieindex eingeben"));
+        await deleteCategory(ps);
+    }else{
+        console.log(warning("Bitte einen gültigen Kategorieindex eingeben"));
+        await deleteCategory(ps);
+    }
 }
 
 // edit category
@@ -206,42 +223,57 @@ async function editCategory(ps){
         categoryString = blue(`[${i+1}]`) + `${ps.categoryArray[i]}\n` + categoryString;
     }
     categoryString = "Welche Kategorie möchten Sie bearbeiten?\n" + categoryString;
-    let category = ps.categoryArray[parseFloat(await prompt(categoryString))-1];
-    let categoryArray = select(ps, category);
-    console.clear();
-    let input = await prompt(underline("Was möchten Sie mit dieser Kategorie tun?\n") + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n");
-    switch(input){
-        case "1":
-            await deleteQuestion(categoryArray);
-            break;
-        case "2":
-            await editQuestion(categoryArray, category);
-            break;
-        case "3":
-            await addQuestion(categoryArray, category);
-            break;
-        case "4":
-            await addMultiQuestion(categoryArray, category);
-            break;
-        case "5":
-            let newName = await prompt("Wie soll der neue Name lauten?\n");
-            let isCategory = element => element === category;
-            let index = ps.categoryArray.findIndex(isCategory);
-            ps.categoryArray[index] = newName;
-            
-            for(let i = 0; i < categoryArray.length; i++){
-                // TODO index der kategorie 
-                categoryArray[i].category = newName;
-            }
-            console.clear()
-            break;  
-        case "exit":
-            break;
-        default:
-            console.log(warning("Ungültiger Input"));
-            break;
+    let returnString = await prompt(categoryString);
+    let category = ps.categoryArray[parseFloat(returnString)-1];
+    if(ps.categoryArray.includes(category)){
+        ///////
+        let categoryArray = select(ps, category);
+        console.clear();
+        let input = await prompt(underline("Was möchten Sie mit dieser Kategorie tun?\n") + blue("[1]") +" Eine Frage löschen\n" + blue("[2]") +" Eine Frage bearbeiten\n" + blue("[3]") +" Eine Frage hinzufügen\n" + blue("[4]") + " Eine Multiple Choice Frage hinzufügen\n" + blue("[5]") + " Den Namen ändern\n" + exit + " Zurück zum Hauptmenü\n");
+        switch(input){
+            case "1":
+                await deleteQuestion(categoryArray);
+                break;
+            case "2":
+                await editQuestion(categoryArray, category);
+                break;
+            case "3":
+                await addQuestion(categoryArray, category);
+                break;
+            case "4":
+                await addMultiQuestion(categoryArray, category);
+                break;
+            case "5":
+                let newName = await prompt("Wie soll der neue Name lauten?\n");
+                let isCategory = element => element === category;
+                let index = ps.categoryArray.findIndex(isCategory);
+                ps.categoryArray[index] = newName;
+                
+                for(let i = 0; i < categoryArray.length; i++){
+                    // TODO index der kategorie 
+                    categoryArray[i].category = newName;
+                }
+                console.clear()
+                break;  
+            case "exit":
+                break;
+            default:
+                console.log(warning("Ungültiger Input"));
+                break;
+        }        
+        for(let i = categoryArray.length-1; i >= 0; i--){
+            ps.questionArray.push(categoryArray[i]);
+        }
+        console.clear()
+    } else if(returnString == "exit"){
+        console.clear();
+        return;
+    } else if(category===undefined){//schauen ob ungültige Eingabe
+        console.log(warning("Bitte einen gültigen Kategorieindex eingeben"));
+        await editCategory(ps);
+    }else{
+        console.log(warning("Bitte einen gültigen Kategorieindex eingeben"));
+        await editCategory(ps);
     }
-    for(let i = categoryArray.length-1; i >= 0; i--){
-        ps.questionArray.push(categoryArray[i]);
-    }
+
 }
