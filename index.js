@@ -17,11 +17,8 @@ let mainString =
     exit + " Beenden der App\n";
 
 let start =  yellow("Willkommen") + " in der Lernapp!\n"+
-             "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm" + "\n";      //nice to have: bild in terminal (geht recht einfach mit enquirer)            
+             "Mit " + exit + " kommt man zurück zum Hauptmenü bzw. beendet das Programm" + "\n";            
 //////////////
-
-// // let ps = new programmState("main", [], []); //[]dummy
-// let ps = readData("ProgramState");
 
 // Start of Programm
 console.clear();

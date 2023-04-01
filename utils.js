@@ -121,6 +121,7 @@ export function compareMult(promptAnswers,rightAnswers){
   return true
 }
 
+//picks 1 out of 3 users
 export async function userHandling(){
   let userString = ("Welche Benutzer möchten Sie laden?\n" +
   blue("[1]") + " Benutzer 1\n" +
@@ -128,6 +129,7 @@ export async function userHandling(){
   blue("[3]") + " Benutzer 3\n");
   let user;
   let ps;
+  //loop (exit by choosing accepted input)
   while(true){
     user = await prompt(userString);
     user.trimStart().trimEnd()
@@ -150,4 +152,3 @@ export async function userHandling(){
     }
   }
 }
-
