@@ -2,7 +2,7 @@
 // here the main programm loop will take place
 // and the inputs will be forwarded to the
 // responsible functions
-import {programmState, question, multipleChoice, userHandling} from './utils.js';
+import {programmState, question, multipleChoice} from './utils.js';
 import { saveData, readData } from './readwrite.js';
 import {exit, blue, green, warning, black, yellow, underline} from './design.js';
 import { handleManagement } from "./management.js";

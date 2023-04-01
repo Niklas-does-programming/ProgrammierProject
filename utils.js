@@ -2,8 +2,6 @@
 // neccessary functions and classes
 import { underline, yellow } from './design.js';
 import pkg from "enquirer";
-import { readData } from './readwrite.js';
-import { blue, warning } from './design.js';
 const { Input } = pkg;
 const { MultiSelect } = pkg;
 
