@@ -27,7 +27,7 @@ export async function handleTraining(ps) {
       let randomized = await randomize();
       //randomized order of questions
       if(randomized){
-        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
+        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category), ps));
       }
       //questions sorted by how often they were answered wrong in relation to the amount they were asked
       else{
@@ -84,7 +84,7 @@ async function numQuestions(array, category) {
   while(parseInt(num)> array.length || parseInt(num) <= 0 || isNaN(parseInt(num))){ 
     console.log(warning("Ungültige Eingabe"))
     num = await prompt(
-      `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
+      `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`//////////////////////////////////////////////////////
     );
   }
   console.clear();
@@ -100,7 +100,7 @@ async function chooseCategory(array) {
   categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString;
   let index = parseFloat(await prompt(categoryString)) - 1;
   //exeption handler
-  while(parseInt(index)> array.length || parseInt(index) <= 0 || isNaN(parseInt(index))){ 
+  while(parseInt(index)> array.length || parseInt(index) < 0 || isNaN(parseInt(index))){ 
     console.log(warning("Ungültige Eingabe"))
     index = parseFloat(await prompt(categoryString)) - 1;
   }
