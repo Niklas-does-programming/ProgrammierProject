@@ -120,35 +120,3 @@ export function compareMult(promptAnswers,rightAnswers){
   }
   return true
 }
-
-//picks 1 out of 3 users
-export async function userHandling(){
-  let userString = ("Welche Benutzer möchten Sie laden?\n" +
-  blue("[1]") + " Benutzer 1\n" +
-  blue("[2]") + " Benutzer 2\n" +
-  blue("[3]") + " Benutzer 3\n");
-  let user;
-  let ps;
-  //loop (exit by choosing accepted input)
-  while(true){
-    user = await prompt(userString);
-    user.trimStart().trimEnd()
-    switch (user) {
-      case "1":
-        ps = readData("ProgramState");
-        console.clear();
-        return ps;
-      case "2":
-        ps = readData("ProgramState2");
-        console.clear();
-        return ps;
-      case "3":
-        ps = readData("ProgramState3");
-        console.clear();
-        return ps;
-      default:
-        console.log(warning("Ungültige Eingabe"));
-        break;
-    }
-  }
-}

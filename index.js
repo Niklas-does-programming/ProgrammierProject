@@ -25,7 +25,7 @@ console.clear();
 console.log(start);
 
 //user picker
-let ps = await userHandling()
+let ps = readData("ProgramState");
 
 let input;
 // programm loop

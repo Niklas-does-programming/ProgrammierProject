@@ -14,7 +14,7 @@ export function readData(keyToFile){
 //save data in localstorage
 export function saveData(fileToBeSaved){
     const data = JSON.stringify(fileToBeSaved); //parse obj to str in Jsonformat
-    localStorage.setItem(fileToBeSaved.user, data); //set JSON File in Localstorage
+    localStorage.setItem("ProgramState", data); //set JSON File in Localstorage
 }
  
 
