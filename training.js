@@ -14,9 +14,10 @@ let trainingString =
   exit + " zurück zum Hauptmenü\n";
 ////////////////////
 
-// main traunung function
+// main training function
 export async function handleTraining(ps) {
   let input = await prompt(trainingString);
+  input.trimEnd().trimStart()
   switch (input) {
     // Question from specific category
     case "1":
@@ -24,17 +25,23 @@ export async function handleTraining(ps) {
       let category = await chooseCategory(ps.categoryArray);
       let questionFromSpecificCategory = await getQuestions(ps, category);
       let randomized = await randomize();
+      //randomized order of questions
       if(randomized){
-        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,numQuestions(questionFromSpecificCategory,category)));
+        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
       }
+      //questions sorted by how often they were answered wrong in relation to the amount they were asked
       else{
-        await askQuestion(selectQuestion(questionFromSpecificCategory,numQuestions(questionFromSpecificCategory,category)));
+        await askQuestion(selectQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
       }
+      if(ps.questionArray == undefined){
+        let newArray = questionFromSpecificCategory;
+        ps.questionArray = newArray;
+      }
+      else{ questionFromSpecificCategory.forEach(element => ps.questionArray.push(element) )}
       break;
     // Question from all categorys
     case "2":
       let allCategoryQuest = ps.questionArray;
-      
       await askQuestion(selectQuestion(allCategoryQuest, await numQuestions(allCategoryQuest, "aller Fragen")));
       break;
     case "exit":
@@ -73,6 +80,13 @@ async function numQuestions(array, category) {
   let num = await prompt(
     `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
   );
+  //exeption handler
+  while(parseInt(num)> array.length || parseInt(num) <= 0 || isNaN(parseInt(num))){ 
+    console.log(warning("Ungültige Eingabe"))
+    num = await prompt(
+      `Anzahl an Fragen aus dem Bereich ${category}: ${array.length}\n`
+    );
+  }
   console.clear();
   return parseInt(num);
 }
@@ -85,6 +99,11 @@ async function chooseCategory(array) {
   }
   categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString;
   let index = parseFloat(await prompt(categoryString)) - 1;
+  //exeption handler
+  while(parseInt(index)> array.length || parseInt(index) <= 0 || isNaN(parseInt(index))){ 
+    console.log(warning("Ungültige Eingabe"))
+    index = parseFloat(await prompt(categoryString)) - 1;
+  }
   return array[index];
 }
 
