@@ -24,8 +24,12 @@ let start =  yellow("Willkommen") + " in der Lernapp!\n"+
 console.clear();
 console.log(start);
 
-//user picker
+//reading out file
 let ps = readData("ProgramState");
+
+if(ps === null){
+  ps = new programmState("", [], []);
+}
 
 let input;
 // programm loop

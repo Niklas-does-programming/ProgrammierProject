@@ -18,40 +18,61 @@ let trainingString =
 export async function handleTraining(ps) {
   let input = await prompt(trainingString);
   input.trimEnd().trimStart()
+  let randomized;
   switch (input) {
     // Question from specific category
     case "1":
       console.clear();
       let category = await chooseCategory(ps.categoryArray);
-      let questionFromSpecificCategory = await getQuestions(ps, category);
-      let randomized = await randomize();
-      //randomized order of questions
-      if(randomized){
-        await askQuestion(selectRandomQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category), ps));
+      if (category == ""){
+        console.clear();
+      }else{
+        let questionFromSpecificCategory = await getQuestions(ps, category);
+        if(questionFromSpecificCategory == []){
+          console.log(warning("Keine Fragen zu dieser Kategorie vorhanden"));
+        }else{
+          randomized = await randomize();
+          //randomized order of questions
+          if(randomized){
+            await askQuestion(selectRandomQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
+          }
+          //questions sorted by how often they were answered wrong in relation to the amount they were asked
+          else{
+            await askQuestion(selectQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
+          }
+          if(ps.questionArray == undefined){
+            let newArray = questionFromSpecificCategory;
+            ps.questionArray = newArray;
+          }
+          else{ questionFromSpecificCategory.forEach(element => ps.questionArray.push(element) )}
+          console.clear();
+        }
       }
-      //questions sorted by how often they were answered wrong in relation to the amount they were asked
-      else{
-        await askQuestion(selectQuestion(questionFromSpecificCategory,await numQuestions(questionFromSpecificCategory,category)));
-      }
-      if(ps.questionArray == undefined){
-        let newArray = questionFromSpecificCategory;
-        ps.questionArray = newArray;
-      }
-      else{ questionFromSpecificCategory.forEach(element => ps.questionArray.push(element) )}
       break;
     // Question from all categorys
     case "2":
       let allCategoryQuest = ps.questionArray;
-      await askQuestion(selectQuestion(allCategoryQuest, await numQuestions(allCategoryQuest, "aller Fragen")));
+      if(allCategoryQuest.length == 0){
+        console.log(warning("Keine Fragen vorhanden"))
+      }else{
+        randomized = await randomize();
+        if(randomized){
+          await askQuestion(selectRandomQuestion(allCategoryQuest, await numQuestions(allCategoryQuest, "aller Fragen")));
+        }else{
+          await askQuestion(selectQuestion(allCategoryQuest, await numQuestions(allCategoryQuest, "aller Fragen")));
+        }
+      console.clear();
+      }
       break;
     case "exit":
+      console.clear();
       break;
     default:
       console.log("Ungültige Eingabe");
       await handleTraining(ps);
+      console.clear();
       break;
   }
-  console.clear();
 }
 
 // get questions
@@ -99,8 +120,12 @@ async function chooseCategory(array) {
     categoryString = categoryString + blue(`[${i + 1}]`) + `${array[i]}\n`;
   }
   categoryString = "Welche Kategorie möchten Sie auswählen?\n" + categoryString + exit + "\n";
-  let index = parseFloat(await prompt(categoryString)) - 1;
+  let returnString = await prompt(categoryString);
+  let index = parseFloat(returnString) - 1;
   //exeption handler
+  if(returnString.toLowerCase() == "exit"){
+    return "";
+  }
   while(parseInt(index)> array.length || parseInt(index) < 0 || isNaN(parseInt(index))){ 
     console.log(warning("Ungültige Eingabe"))
     index = parseFloat(await prompt(categoryString)) - 1;

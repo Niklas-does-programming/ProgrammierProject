@@ -63,15 +63,15 @@ export function select(ps, criteria) {
   return tmp;
 }
 
-//select amount of questions sorted by questionvalue (often wrong answered questions first)
+//select amount of questions sorted by questionvalue (often wrong answered questions first) (only comes into effect after a 3 or 4 runs)
 export function selectQuestion(questionArray, amountOfQuestions) { 
-  let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionText);
+  let assortedArray = questionArray.sort((a,b) => a.questionValue - b.questionValue);
   assortedArray = assortedArray.slice(0, amountOfQuestions);
   return assortedArray
 }
 
 //select amount of questions sorted randomly
-export function selectRandomQuestion(newQuestionArray, amountOfQuestions, ps) { 
+export function selectRandomQuestion(newQuestionArray, amountOfQuestions) { 
   let sortArray = newQuestionArray.sort(() => Math.random()-0.5);
   sortArray = sortArray.slice(0, amountOfQuestions);
   return sortArray;

@@ -21,4 +21,5 @@ MUST-HAVES:
 umgesetzte NICE-TO-HAVES:
     -"enquierer" um Eingaben dynamisch zu korrigieren, Multiple-Choice-Fragen intuitiver und leichter zu machen und Umlaute eingebbar
     -"chalk" zu besserer Übersichtlichkeit
-    -es ist möglich fragen sortiert in zufälliger Reihenfolge abzufragen wenn nicht werden sie in einer Reihenfolge sortiert, die sich danach richtet wie oft die Frage falsch beantwortet wurde im Vergleich dazu wie oft diese insgesamt gefragt wurden -> optimierte Lernreihenfolge
+    -es ist möglich fragen sortiert in zufälliger Reihenfolge abzufragen wenn nicht werden sie in einer Reihenfolge sortiert, die sich danach richtet wie oft die Frage falsch beantwortet wurde im Vergleich dazu wie oft diese insgesamt gefragt wurden -> optimierte Lernreihenfolge (erst nach 3 bis 4 Durchläufen tritt dies sinnvoll in Aktion)
+    -wenn die Daten im localStorage nicht richtig ausgelesen werden, werden diese neu angelegt
